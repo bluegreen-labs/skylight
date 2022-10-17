@@ -1,0 +1,156 @@
+---
+title: "skylight advanced"
+author: "Koen Hufkens"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{skylight advanced}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dpi = 300
+)
+```
+
+## Factoring in cloud coverage
+
+The original implementation of the software allows for a correction of
+illuminance based upon three conditions. However, this is in all practical
+sense a simple scaling of the data. You can either apply this scaling factor,
+a division by a number greater than 1 using the function itself, or apply it
+post-hoc on the returned values.
+
+### Downloading cloud cover data
+
+To provide our analysis with cloud cover data we rely on the BlueGreen Labs 
+[`ecmwfr`](https://github.com/bluegreen-labs/ecmwfr) package. So, we first query some
+total cloud cover data (0 - 1) covering most of Europe.
+
+```{r eval = FALSE}
+library(ecmwfr)
+
+request <- list(
+  product_type = "reanalysis",
+  format = "netcdf",
+  variable = "total_cloud_cover",
+  year = "2021",
+  month = "02",
+  day = "01",
+  time = c("00:00", "01:00", "02:00", "03:00", "04:00",
+           "05:00", "06:00", "07:00", "08:00", "09:00",
+           "10:00", "11:00", "12:00", "13:00", "14:00",
+           "15:00", "16:00", "17:00", "18:00", "19:00",
+           "20:00", "21:00", "22:00", "23:00"),
+  area = c(70, -20, 33, 25),
+  dataset_short_name = "reanalysis-era5-single-levels",
+  target = "era5.nc"
+)
+
+wf_request(
+  user = "xxxx",
+  request = request,
+  transfer = TRUE
+)
+```
+
+Downloaded data can be read with the `terra` package. The above downloaded data is included as a demo
+data set in the package. You can therefore use this included data in this workflow. Check out the `ecmwfr`
+package to download your own custom data.
+
+```{r}
+library(terra)
+
+# read in data
+era5 <- terra::rast(system.file(package = "skylight", "extdata/era5.nc"))
+
+# use this command when downloading the data yourself
+# era5 <- terra:rast(file.path(tempdir(),"era5.nc"))
+```
+
+However, the spatial format needs to be converted to a data frame for use
+with the `skylight` package.
+
+```{r}
+library(dplyr)
+
+# create a data frame with values
+df <- era5 |>
+  as.data.frame(xy = TRUE) |>
+  rename(
+    longitude = "x",
+    latitude = "y"
+  )
+
+# add the original time stamp
+df$date <- time(era5)
+
+print(head(df))
+```
+
+```{r}
+library(skylight)
+
+# calculate sky illuminance values for
+# a single date/time and location
+df <- df |>
+  mutate(
+    # rescale total cloud cover between 1 - 10
+    # the acceptable range for skylight
+    tcc = scales::rescale(df$tcc, to = c(1,10)),
+    # calculate illuminance corrected using
+    # total cloud cover
+    total_illuminance = skylight(
+      longitude,
+      latitude,
+      date,
+      tcc
+    )$total_illuminance
+  )
+```
+
+We can now plot the sky illuminance as corrected for cloud cover.
+
+```{r}
+library(ggplot2)
+library(rnaturalearth)
+
+# country outlines
+outlines <- rnaturalearth::ne_countries(returnclass = "sf")
+
+ggplot(df) +
+  geom_tile(
+    aes(
+      longitude,
+      latitude,
+      fill = log(total_illuminance)
+    )
+  ) +
+  scale_fill_viridis_c(
+    name = "Total illuminance (log(lux))"
+  ) +
+  geom_sf(
+    data = outlines,
+    colour = "white",
+    fill = NA
+    ) +
+  coord_sf(
+    xlim = c(-20, 25),
+    ylim = c(33, 70)
+  ) +
+  labs(
+    title = "Total illuminance with spatial variability\n due to cloud cover and location",
+    y = "",
+    x = ""
+  ) +
+  theme(
+    legend.position = "bottom"
+  )
+```
+
+
+

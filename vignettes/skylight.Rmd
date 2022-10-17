@@ -1,0 +1,92 @@
+---
+title: "skylight use"
+author: "Koen Hufkens"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{skylight use}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+```
+
+### Single date/time and location
+
+skylight values can be calculated for a single point and date using the below call. This will generate a data frame with model values.
+
+```{r}
+# load the library
+library(skylight)
+
+# calculate sky illuminance values for
+# a single date/time and location
+df <- skylight(
+      -135.8,
+      -23.4,
+      as.POSIXct("1986-12-18 21:00:00", tz = "GMT"),
+      1
+    )
+
+print(df)
+```
+
+### Multiple dates/times and/or locations
+
+The skylight function is vectorized, so you can provide vectors of input parameters instead of using a loop and the above function call.
+
+```{r}
+# Generate a dataset with 15 minute values
+# for approximately two months
+input <- data.frame(
+  longitude = 0,
+  latitude = 50,
+  date =  as.POSIXct("2020-06-18 00:00:00", tz = "GMT") + seq(0, 60*24*3600, 900),
+  sky_conditions = 1
+)
+
+# calculate sky illuminance values for
+# a single date/time and location
+df <- skylight(
+      input$longitude,
+      input$latitude,
+      input$date,
+      1
+    )
+
+print(head(df))
+
+# previous results are of the same dimension (rows)
+# as the input data and can be bound together
+# for easy plotting
+input <- cbind(input, df)
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(input) +
+  geom_tile(
+    aes(
+      as.Date(date),
+      as.numeric(format(date, "%H")) + as.numeric(format(date, "%M"))/60,
+      fill = log(total_illuminance)
+    )
+  ) +
+  scale_fill_viridis_c() +
+  labs(
+    title = "Diurnal cycles of total illuminance",
+    subtitle = "(including the effect of moon contributions)",
+    y = "Illuminance (log(lux))",
+    x = ""
+  ) +
+  theme(
+    legend.position = "bottom"
+  )
+```
