@@ -96,7 +96,7 @@
                         <h4 data-toc-skip class="author">Koen
 Hufkens</h4>
             
-            <h4 data-toc-skip class="date">2022-10-17</h4>
+            <h4 data-toc-skip class="date">2022-10-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/bluegreen-labs/skylight/blob/HEAD/vignettes/skylight.Rmd" class="external-link"><code>vignettes/skylight.Rmd</code></a></small>
       <div class="hidden name"><code>skylight.Rmd</code></div>
@@ -141,7 +141,7 @@ call.</p>
 <span><span class="va">input</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  longitude <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  latitude <span class="op">=</span> <span class="fl">50</span>,</span>
-<span>  date <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"2020-06-18 00:00:00"</span>, tz <span class="op">=</span> <span class="st">"GMT"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">60</span><span class="op">*</span><span class="fl">24</span><span class="op">*</span><span class="fl">3600</span>, <span class="fl">900</span><span class="op">)</span>,</span>
+<span>  date <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"2020-06-18 00:00:00"</span>, tz <span class="op">=</span> <span class="st">"GMT"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">29</span><span class="op">*</span><span class="fl">24</span><span class="op">*</span><span class="fl">3600</span>, <span class="fl">1800</span><span class="op">)</span>,</span>
 <span>  sky_conditions <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -157,18 +157,18 @@ call.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   sun_azimuth sun_altitude sun_illuminance moon_azimuth moon_altitude</span></span>
 <span><span class="co">#&gt; 1         360          -17    2.872734e-05           40           -18</span></span>
-<span><span class="co">#&gt; 2           3          -17    3.076232e-05           43           -17</span></span>
-<span><span class="co">#&gt; 3           7          -16    3.874383e-05           46           -15</span></span>
-<span><span class="co">#&gt; 4          10          -16    5.733049e-05           49           -13</span></span>
-<span><span class="co">#&gt; 5          14          -15    9.949008e-05           52           -11</span></span>
-<span><span class="co">#&gt; 6          17          -15    2.019566e-04           55            -9</span></span>
+<span><span class="co">#&gt; 2           7          -16    3.874383e-05           46           -15</span></span>
+<span><span class="co">#&gt; 3          14          -15    9.949008e-05           52           -11</span></span>
+<span><span class="co">#&gt; 4          21          -14    4.779034e-04           58            -7</span></span>
+<span><span class="co">#&gt; 5          28          -12    4.163346e-03           64            -3</span></span>
+<span><span class="co">#&gt; 6          34          -10    6.272634e-02           69             1</span></span>
 <span><span class="co">#&gt;   moon_illuminance moon_fraction total_illuminance</span></span>
 <span><span class="co">#&gt; 1     7.503453e-14            11      0.0005287273</span></span>
-<span><span class="co">#&gt; 2     4.008330e-13            11      0.0005307623</span></span>
-<span><span class="co">#&gt; 3     2.407014e-12            11      0.0005387438</span></span>
-<span><span class="co">#&gt; 4     1.611058e-11            10      0.0005573305</span></span>
-<span><span class="co">#&gt; 5     1.189855e-10            10      0.0005994902</span></span>
-<span><span class="co">#&gt; 6     9.575228e-10            10      0.0007019576</span></span>
+<span><span class="co">#&gt; 2     2.407014e-12            11      0.0005387438</span></span>
+<span><span class="co">#&gt; 3     1.189855e-10            10      0.0005994902</span></span>
+<span><span class="co">#&gt; 4     8.248541e-09            10      0.0009779116</span></span>
+<span><span class="co">#&gt; 5     6.409745e-07            10      0.0046639867</span></span>
+<span><span class="co">#&gt; 6     1.859100e-05            10      0.0632449283</span></span>
 <span></span>
 <span><span class="co"># previous results are of the same dimension (rows)</span></span>
 <span><span class="co"># as the input data and can be bound together</span></span>
@@ -196,6 +196,18 @@ call.</p>
 <span>    legend.position <span class="op">=</span> <span class="st">"bottom"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="skylight_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<p>Condensing this figure to only the mean half hourly value for a full
+moon captures the contributions of both sun and moon to the diurnal
+profile.</p>
+<pre><code><span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     filter, lag</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span></code></pre>
+<p><img src="skylight_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 </div>
   </div>
 

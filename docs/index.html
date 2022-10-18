@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sun and Moon illuminance values • skylight</title>
+<title>A simple sky illuminance model • skylight</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="/apple-touch-icon.png">
@@ -18,11 +18,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,700;1,300;1,400&amp;display=swap" rel="stylesheet">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><!-- ropensci --><link href="bglabs.css" rel="stylesheet">
-<meta property="og:title" content="Sun and Moon illuminance values">
-<meta property="og:description" content="Calculates sky illuminance (in lux) for both sun and moon. A
- verbatim translation of the code included in `Computer Programs for Sun and
- Moon Illuminance With Contingent Tables and Diagrams by Janiczek and DeYoung
- published in the US Naval observatory circular nr. 171, 1987.">
+<meta property="og:title" content="A simple sky illuminance model">
+<meta property="og:description" content="A simple sky illuminance model which calculates values (in lux) 
+ for both sun and moon. The model is a verbatim translation of the code 
+ included in `Computer Programs for Sun and Moon Illuminance With Contingent 
+ Tables and Diagrams by Janiczek and DeYoung published in the US Naval 
+ observatory circular nr. 171, 1987.">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
 </head>
@@ -95,14 +96,25 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="sky-illuminance-">Sky Illuminance <a href="https://github.com/bluegreen-labs/skylight" class="external-link"><img src="logo.png" align="right" height="139"></a>
-<a class="anchor" aria-label="anchor" href="#sky-illuminance-"></a>
+<div class="page-header"><h1 id="skylight-">Skylight <a href="https://github.com/bluegreen-labs/skylight" class="external-link"><img src="logo.png" align="right" height="139"></a>
+<a class="anchor" aria-label="anchor" href="#skylight-"></a>
 </h1></div>
 
-<p>The skylight package returns sky illuminance parameters for both the sun and the moon, for a given date/time and locaion. In addition to some ancillary parameters such as sun and moon azimuth and altitude.</p>
-<p>The code is an almost verbatim transcription of the work by Janiczek and DeYoung (1987), published in the US Naval observatory circular. An online copy of this manuscripts can be found on the internet archive (<a href="https://archive.org/details/DTIC_ADA182110" class="external-link uri">https://archive.org/details/DTIC_ADA182110</a>)</p>
-<p>Very few adjustments to the original code where made to ensure parity. As such, most of the naming of the subroutines was retained. However, some changes were made to the main routine and some aspects of the subroutines to ensure vectorization of the code so speed up batch processing of data.</p>
-<p>With time more detailed information will be added to all functions, including references to subroutine functions and more transparent variable names, while limiting variable recycling (a common practice in this code base). As it stands the code delivers parity with the programme certification values published in Table A of Janiczek and DeYoung (1987). These values are used in unit testing.</p>
+<p>The <code>skylight</code> package returns sky illuminance parameters for both the sun and the moon, for a given date/time and location. In addition, ancillary parameters such as sun and moon azimuth and altitude are provided. The code is an almost verbatim transcription of the work by Janiczek and DeYoung (1987), published in the US Naval observatory circular. An online copy of this manuscripts can be found on the internet archive (<a href="https://archive.org/details/DTIC_ADA182110" class="external-link uri">https://archive.org/details/DTIC_ADA182110</a>)</p>
+<p>Very few adjustments to the original code where made to ensure equivalency in results. As such, most of the naming of the subroutines and variables was retained. However, some changes were made to the main routine and subroutines to ensure vectorization of the code to speed up batch processing of data.</p>
+<p>With time more detailed information will be added to all functions, including references to subroutine functions and more transparent variable names, while limiting variable recycling (a common practice in the original code base). The code delivers equivalent results with the programme certification values published in Table A of Janiczek and DeYoung (1987), as such all original limitations remain (see below).</p>
+<div class="section level2">
+<h2 id="limitations">Limitations<a class="anchor" aria-label="anchor" href="#limitations"></a>
+</h2>
+<p>The sky illuminance model by Janiczek and DeYoung (1987) in <code>skylight</code> has some limitations:</p>
+<ul>
+<li>Design specifications aimed for 0.5 degrees in angle, or two minutes of times. Last digits should be considered uncertain by one unit.</li>
+<li>At latitudes less than 60 degrees, the model should agree with more refined calculations to within one or two minutes of time. For latitudes above this value the model can produce errors of up to four minutes.</li>
+<li>In some circumstances calculated illuminance values might differ from real light levels of a factor 10 or more.</li>
+<li>Strong coherence and proper time keeping is required, there is a strong requirement to provide dates in GMT, corrections based upon latitude (not civil time zone) should be executed before processing. No warnings are provided.</li>
+</ul>
+<p>Yet, overall the model should provide a fast approximation where more computationally expensive models would only provide marginal benefits. For a full description of the model I refer to Janiczek and DeYoung (1987).</p>
+</div>
 <div class="section level2">
 <h2 id="how-to-cite-this-package-in-your-article">How to cite this package in your article<a class="anchor" aria-label="anchor" href="#how-to-cite-this-package-in-your-article"></a>
 </h2>
@@ -144,9 +156,17 @@
 </h3>
 <p>skylight values can be calculated for a single point and date using the below call. This will generate a data frame with model values.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">single_date</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/skylight.html">skylight</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="co"># load the library</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bluegreen-labs/skylight" class="external-link">skylight</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># calculate sky illuminance values for</span></span>
+<span><span class="co"># a single date/time and location</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/skylight.html">skylight</a></span><span class="op">(</span></span>
+<span>      <span class="op">-</span><span class="fl">135.8</span>,</span>
+<span>      <span class="op">-</span><span class="fl">23.4</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"1986-12-18 21:00:00"</span>, tz <span class="op">=</span> <span class="st">"GMT"</span><span class="op">)</span>,</span>
+<span>      <span class="fl">1</span></span>
+<span>    <span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="multiple-datestimes-andor-locations">Multiple dates/times and/or locations<a class="anchor" aria-label="anchor" href="#multiple-datestimes-andor-locations"></a>
@@ -171,8 +191,6 @@
 <span>      <span class="fl">1</span></span>
 <span>    <span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
 <span><span class="co"># previous results are of the same dimension (rows)</span></span>
 <span><span class="co"># as the input data and can be bound together</span></span>
 <span><span class="co"># for easy plotting</span></span>
@@ -184,7 +202,7 @@
 <div class="section level2">
 <h2 id="licensing">Licensing<a class="anchor" aria-label="anchor" href="#licensing"></a>
 </h2>
-<p>The <code>skylight</code> package is distributed under a AGPLv3 license, while the skylight model code resides in the public domain made available by Janiczek and DeYoung (1987). The logo is in part based upon Emoji One v2.0 iconography data.</p>
+<p>The <code>skylight</code> package is distributed under a AGPLv3 license, while the skylight model code resides in the public domain made available by Janiczek and DeYoung (1987). The logo is in part based upon Emoji One v2.0 iconography.</p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

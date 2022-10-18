@@ -96,7 +96,7 @@
                         <h4 data-toc-skip class="author">Koen
 Hufkens</h4>
             
-            <h4 data-toc-skip class="date">2022-10-17</h4>
+            <h4 data-toc-skip class="date">2022-10-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/bluegreen-labs/skylight/blob/HEAD/vignettes/skylight_advanced.Rmd" class="external-link"><code>vignettes/skylight_advanced.Rmd</code></a></small>
       <div class="hidden name"><code>skylight_advanced.Rmd</code></div>
@@ -106,19 +106,21 @@ Hufkens</h4>
     
     
 <div class="section level2">
-<h2 id="factoring-in-cloud-coverage">Factoring in cloud coverage<a class="anchor" aria-label="anchor" href="#factoring-in-cloud-coverage"></a>
+<h2 id="cloud-cover-correction">Cloud cover correction<a class="anchor" aria-label="anchor" href="#cloud-cover-correction"></a>
 </h2>
 <p>The original implementation of the software allows for a correction
-of illuminance based upon three conditions. However, this is in all
-practical sense a simple scaling of the data. You can either apply this
-scaling factor, a division by a number greater than 1 using the function
-itself, or apply it post-hoc on the returned values.</p>
+of illuminance based upon three cloud cover conditions. However, this is
+in all practical sense a simple scaling of the data (see Janiczek and
+DeYoung 1987). You can either apply this scaling factor, a division by a
+number greater than 1 using the function itself, or apply it post-hoc on
+the returned values. Below I show an example routine to use the internal
+scaling, using ERA5 total cloud cover (tcc) data.</p>
 <div class="section level3">
 <h3 id="downloading-cloud-cover-data">Downloading cloud cover data<a class="anchor" aria-label="anchor" href="#downloading-cloud-cover-data"></a>
 </h3>
-<p>To provide our analysis with cloud cover data we rely on the
-BlueGreen Labs <a href="https://github.com/bluegreen-labs/ecmwfr" class="external-link"><code>ecmwfr</code></a>
-package. So, we first query some total cloud cover data (0 - 1) covering
+<p>To provide our analysis with cloud cover data I rely on the BlueGreen
+Labs <a href="https://github.com/bluegreen-labs/ecmwfr" class="external-link"><code>ecmwfr</code></a>
+package. So, I first query some total cloud cover data (0 - 1) covering
 most of Europe.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bluegreen-labs/ecmwfr" class="external-link">ecmwfr</a></span><span class="op">)</span></span>
@@ -200,6 +202,10 @@ use with the <code>skylight</code> package.</p>
 <span><span class="co"># a single date/time and location</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    <span class="co"># values of cloud cover lower than</span></span>
+<span>    <span class="co"># 30% are considered clear conditions</span></span>
+<span>    <span class="co"># for the skylight model - adjust tcc values</span></span>
+<span>    tcc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">tcc</span> <span class="op">&lt;=</span> <span class="fl">0.3</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>    <span class="co"># rescale total cloud cover between 1 - 10</span></span>
 <span>    <span class="co"># the acceptable range for skylight</span></span>
 <span>    tcc <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/rescale.html" class="external-link">rescale</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">tcc</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">10</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -212,11 +218,16 @@ use with the <code>skylight</code> package.</p>
 <span>      <span class="va">tcc</span></span>
 <span>    <span class="op">)</span><span class="op">$</span><span class="va">total_illuminance</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p>We can now plot the sky illuminance as corrected for cloud cover.</p>
+<p>I can now plot the sky illuminance as corrected for cloud cover using
+the internal scaling factor. Keep in mind that this is a rather ad-hoc
+solution. For proper results external empirical relationships should be
+established between the model response and measured illuminance values
+under varying cloud cover conditions.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ropenscilabs/rnaturalearth" class="external-link">rnaturalearth</a></span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># country outlines</span></span>
 <span><span class="va">outlines</span> <span class="op">&lt;-</span> <span class="fu">rnaturalearth</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rnaturalearth/man/ne_countries.html" class="external-link">ne_countries</a></span><span class="op">(</span>returnclass <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">+</span></span>

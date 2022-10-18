@@ -17,18 +17,18 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Factoring in cloud coverage
+## Cloud cover correction
 
 The original implementation of the software allows for a correction of
-illuminance based upon three conditions. However, this is in all practical
-sense a simple scaling of the data. You can either apply this scaling factor,
-a division by a number greater than 1 using the function itself, or apply it
-post-hoc on the returned values.
+illuminance based upon three cloud cover conditions. However, this is in all practical
+sense a simple scaling of the data (see Janiczek and DeYoung 1987). You can either apply this scaling factor, a division by a number greater than 1 using the function itself, or apply it
+post-hoc on the returned values. Below I show an example routine to use the internal scaling,
+using ERA5 total cloud cover (tcc) data.
 
 ### Downloading cloud cover data
 
-To provide our analysis with cloud cover data we rely on the BlueGreen Labs 
-[`ecmwfr`](https://github.com/bluegreen-labs/ecmwfr) package. So, we first query some
+To provide our analysis with cloud cover data I rely on the BlueGreen Labs 
+[`ecmwfr`](https://github.com/bluegreen-labs/ecmwfr) package. So, I first query some
 total cloud cover data (0 - 1) covering most of Europe.
 
 ```{r eval = FALSE}
@@ -99,6 +99,10 @@ library(skylight)
 # a single date/time and location
 df <- df |>
   mutate(
+    # values of cloud cover lower than
+    # 30% are considered clear conditions
+    # for the skylight model - adjust tcc values
+    tcc = ifelse(tcc <= 0.3, 0, 1),
     # rescale total cloud cover between 1 - 10
     # the acceptable range for skylight
     tcc = scales::rescale(df$tcc, to = c(1,10)),
@@ -113,7 +117,7 @@ df <- df |>
   )
 ```
 
-We can now plot the sky illuminance as corrected for cloud cover.
+I can now plot the sky illuminance as corrected for cloud cover using the internal scaling factor. Keep in mind that this is a rather ad-hoc solution. For proper results external empirical relationships should be established between the model response and measured illuminance values under varying cloud cover conditions.
 
 ```{r}
 library(ggplot2)

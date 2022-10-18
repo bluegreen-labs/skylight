@@ -47,7 +47,7 @@ The skylight function is vectorized, so you can provide vectors of input paramet
 input <- data.frame(
   longitude = 0,
   latitude = 50,
-  date =  as.POSIXct("2020-06-18 00:00:00", tz = "GMT") + seq(0, 60*24*3600, 900),
+  date =  as.POSIXct("2020-06-18 00:00:00", tz = "GMT") + seq(0, 29*24*3600, 1800),
   sky_conditions = 1
 )
 
@@ -90,3 +90,51 @@ ggplot(input) +
     legend.position = "bottom"
   )
 ```
+
+Condensing this figure to only the mean half hourly value for a full moon captures the contributions of both sun and moon to the diurnal profile.
+
+```{r echo = FALSE}
+library(dplyr)
+library(tidyr)
+
+df <- input |>
+  filter(
+    moon_fraction == 100
+  ) |>
+  mutate(
+    hour = as.numeric(format(date, "%H")),
+    hour = ifelse(hour >= 12, hour - 24, hour)
+  ) |>
+  group_by(hour) |>
+  summarize(
+    sun_illuminance = mean(sun_illuminance),
+    moon_illuminance = mean(moon_illuminance),
+    total_illuminance = mean(total_illuminance),
+    .groups = "drop"
+  ) |>
+  pivot_longer(
+    cols = ends_with("illuminance"),
+    names_to = "illuminance"
+  )
+
+ggplot(df) +
+  geom_path(
+    aes(
+      hour,
+      log(value),
+      group = illuminance,
+      colour = illuminance
+    )
+  ) +
+  coord_cartesian(
+    ylim = c(-4, 2),
+    xlim = c(-5, 5)
+  ) +
+  labs(
+    title = "Components of total illuminance",
+    subtitle = "(30min increments during full moon)",
+    x = "Hour (centered on midnight)"
+  )
+
+```
+

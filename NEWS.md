@@ -1,3 +1,3 @@
-# skylight 1.0
+# skylight 1.0-beta
 
-* first draft
+* beta release
