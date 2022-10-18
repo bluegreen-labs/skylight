@@ -1,6 +1,6 @@
 Package: skylight
 Type: Package
-Title: A simple sky illuminance model
+Title: A Simple Sky Illuminance Model
 Version: 1.0
 Authors@R: c(person(
                family = "Hufkens",

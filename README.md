@@ -1,10 +1,8 @@
 # Skylight <a href='https://github.com/bluegreen-labs/skylight'><img src='logo.png' align="right" height="139" /></a>
 
 [![R-CMD-check](https://github.com/bluegreen-labs/skylight/workflows/R-CMD-check/badge.svg)](https://github.com/bluegreen-labs/skylight/actions)
-[![codecov](https://codecov.io/gh/bluegreen-labs/skylight/branch/main/graph/badge.svg?token=ZI3BYIG3MI)](https://codecov.io/gh/bluegreen-labs/skylight)
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/skylight)](https://cran.r-project.org/package=skylight)
 [![](https://cranlogs.r-pkg.org/badges/skylight)](https://cran.r-project.org/package=skylight)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6527639.svg)](https://doi.org/10.5281/zenodo.6527638)
 
 The `skylight` package returns sky illuminance parameters for both the sun and 
 the moon, for a given date/time and location. In addition, ancillary 

@@ -77,12 +77,17 @@ and altitude.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">skylight</span><span class="op">(</span><span class="va">longitude</span>, <span class="va">latitude</span>, <span class="va">date</span>, sky_condition <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">skylight</span><span class="op">(</span><span class="va">.data</span>, <span class="va">longitude</span>, <span class="va">latitude</span>, <span class="va">date</span>, sky_condition <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>longitude</dt>
+    <dl><dt>.data</dt>
+<dd><p>A data frame or data frame extension (e.g. a tibble) with
+named columns: longitude, latitude, date and optionally sky_condition</p></dd>
+
+
+<dt>longitude</dt>
 <dd><p>decimal longitude (single value or vector of values)</p></dd>
 
 
