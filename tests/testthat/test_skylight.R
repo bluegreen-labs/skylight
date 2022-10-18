@@ -9,12 +9,12 @@ test_that("check skylight function against known outputs", {
 
   vectorized_output <- round(
     skylight(
-      c(-135.8, 39.5),
-      c(-23.4, 21.3),
-      c(as.POSIXct("1986-12-18 21:00:00", tz = "GMT"),
+      longitude = c(-135.8, 39.5),
+      latitude = c(-23.4, 21.3),
+      date = c(as.POSIXct("1986-12-18 21:00:00", tz = "GMT"),
         d
       ),
-      c(1,1)
+      sky_condition = c(1,1)
     )
   )
 
@@ -30,4 +30,33 @@ test_that("check skylight function against known outputs", {
   )
 
   expect_equal(vectorized_output, reference)
+})
+
+test_that("piped input tests", {
+
+  input <- data.frame(
+    longitude = 0,
+    latitude = 50,
+    date =  as.POSIXct("2020-06-18 00:00:00", tz = "GMT") + seq(0, 1*24*3600, 1800),
+    sky_condition = 1
+  )
+
+  # return a data frame if successful
+  expect_type(
+    input |>
+      skylight(),
+    "list"
+    )
+
+  # fail on missing latitude
+  expect_error(
+    input[,-2] |>
+      skylight()
+    )
+
+  # return message on missing sky_conditions
+  expect_message(
+    input[,-4] |>
+      skylight()
+  )
 })

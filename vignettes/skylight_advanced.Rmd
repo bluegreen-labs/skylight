@@ -104,17 +104,14 @@ df <- df |>
     # for the skylight model - adjust tcc values
     tcc = ifelse(tcc <= 0.3, 0, 1),
     # rescale total cloud cover between 1 - 10
-    # the acceptable range for skylight
-    tcc = scales::rescale(df$tcc, to = c(1,10)),
-    # calculate illuminance corrected using
-    # total cloud cover
-    total_illuminance = skylight(
-      longitude,
-      latitude,
-      date,
-      tcc
-    )$total_illuminance
-  )
+    # the acceptable range for skylight's
+    # sky_condition parameter
+    sky_condition = scales::rescale(df$tcc, to = c(1,10))
+  ) |>
+  # pipe into skylight
+  skylight()
+
+print(head(df))
 ```
 
 I can now plot the sky illuminance as corrected for cloud cover using the internal scaling factor. Keep in mind that this is a rather ad-hoc solution. For proper results external empirical relationships should be established between the model response and measured illuminance values under varying cloud cover conditions.

@@ -33,12 +33,12 @@ levels of a factor 10 or more.
 to provide dates in GMT, corrections based upon latitude (not civil time zone) should
 be executed before processing. No warnings are provided.
 
-Yet, overall the model should provide a fast approximation where more computationally expensive models would only provide marginal benefits. For a full description of the
-model I refer to Janiczek and DeYoung (1987).
+Yet, overall the model should provide a fast approximation where more computationally expensive models would only provide marginal benefits for most applications. 
+For a full description of the model I refer to Janiczek and DeYoung (1987).
 
 ## How to cite this package in your article
 
-> Koen Hufkens. (2022). bluegreen-labs/skylight: skylight CRAN release v1.0 (v1.0). Zenodo. <https://doi.org/10.5281/zenodo.xxxx>
+> Koen Hufkens. (2022). bluegreen-labs/skylight: skylight CRAN release v1.0 (v1.0). Zenodo. <https://doi.org/10.5281/zenodo.xxxx>, in addition reference the original work by Janiczek and DeYoung (1987, see below)
 
 ## Installation
 
@@ -83,10 +83,10 @@ library(skylight)
 # calculate sky illuminance values for
 # a single date/time and location
 df <- skylight(
-      -135.8,
-      -23.4,
-      as.POSIXct("1986-12-18 21:00:00", tz = "GMT"),
-      1
+      longitude = -135.8,
+      latitude = -23.4,
+      date = as.POSIXct("1986-12-18 21:00:00", tz = "GMT"),
+      sky_conditions = 1
     )
 ```
 
@@ -122,6 +122,38 @@ input <- cbind(input, df)
 Plotting this data results in 
 
 ![](https://bluegreen-labs.github.io/skylight/articles/skylight_files/figure-html/unnamed-chukn-3-1.png)
+
+### Piped data workflow
+
+`skylight` supports piped data frames with appropriatedly named columns as input
+to the function. This allows for fast processing of large data frames, with the
+added advantage that input parameters are returned with the calculated data.
+
+Note that you need a data frame with the three most basic parameters:
+- longitude
+- latitude
+- date
+named as such (all lower case). The function will complain if it doesn't
+find the required column names. Also note that due to the priority of the
+piped construction over the other parameters all parameters should be named
+when calling the function in a conventional way.
+
+
+```r
+# recreating the data frame with parameters
+# as before
+input <- data.frame(
+  longitude = 0,
+  latitude = 50,
+  date =  as.POSIXct("2020-06-18 00:00:00", tz = "GMT") + seq(0, 1*24*3600, 1800),
+  sky_condition = 1
+)
+
+# but now using the piped approach to calculate
+# all values
+
+df <- input |> skylight()
+```
 
 ## Licensing
 

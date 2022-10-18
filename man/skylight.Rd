@@ -2,11 +2,14 @@
 % Please edit documentation in R/skylight.R
 \name{skylight}
 \alias{skylight}
-\title{Get sky illuminance parameters}
+\title{Sky illuminance values for the sun and moon}
 \usage{
-skylight(longitude, latitude, date, sky_condition = 1)
+skylight(.data, longitude, latitude, date, sky_condition = 1)
 }
 \arguments{
+\item{.data}{A data frame or data frame extension (e.g. a tibble) with
+named columns: longitude, latitude, date and optionally sky_condition}
+
 \item{longitude}{decimal longitude (single value or vector of values)}
 
 \item{latitude}{decimal latitude (single value or vector of values)}
@@ -15,11 +18,11 @@ skylight(longitude, latitude, date, sky_condition = 1)
 (single value or vector of values)}
 
 \item{sky_condition}{a positive value (>=1) with which to scale
-illuminance values (1 = cloud cover < 70%, 2 = thin veiled clouds
+illuminance values (1 = cloud cover < 30%, 2 = thin veiled clouds
 3 = average clouds, 10 = dark stratus clouds). By and large this
-can be considered a scaling factor, substiting it with the (inverse)
+can be considered a scaling factor, substituting it with the (inverse)
 slope parameter of an empirical fit should render more accurate results.
-(single value or vector of values)}
+(this can be a single value or vector of values)}
 }
 \description{
 Function returns sky illuminance parameters for
@@ -35,8 +38,8 @@ and published in the US Naval observatory circular nr. 171, 1987.
 
 Required parameters are a location (in longitude, latitude),
 and a date in POSIXct format set to the GMT/UTC time zone.
-Conversions to GMT/UTC should be done externally, but errors
-are trapped.
+Conversions to GMT/UTC should be done externally, errors
+are not trapped.
 
 The original code has been vectorized, as such vectors of
 location, time and/or sky conditions can be provided.

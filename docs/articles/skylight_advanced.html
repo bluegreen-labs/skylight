@@ -207,17 +207,35 @@ use with the <code>skylight</code> package.</p>
 <span>    <span class="co"># for the skylight model - adjust tcc values</span></span>
 <span>    tcc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">tcc</span> <span class="op">&lt;=</span> <span class="fl">0.3</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>    <span class="co"># rescale total cloud cover between 1 - 10</span></span>
-<span>    <span class="co"># the acceptable range for skylight</span></span>
-<span>    tcc <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/rescale.html" class="external-link">rescale</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">tcc</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">10</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    <span class="co"># calculate illuminance corrected using</span></span>
-<span>    <span class="co"># total cloud cover</span></span>
-<span>    total_illuminance <span class="op">=</span> <span class="fu"><a href="../reference/skylight.html">skylight</a></span><span class="op">(</span></span>
-<span>      <span class="va">longitude</span>,</span>
-<span>      <span class="va">latitude</span>,</span>
-<span>      <span class="va">date</span>,</span>
-<span>      <span class="va">tcc</span></span>
-<span>    <span class="op">)</span><span class="op">$</span><span class="va">total_illuminance</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<span>    <span class="co"># the acceptable range for skylight's</span></span>
+<span>    <span class="co"># sky_condition parameter</span></span>
+<span>    sky_condition <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/rescale.html" class="external-link">rescale</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">tcc</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="co"># pipe into skylight</span></span>
+<span>  <span class="fu"><a href="../reference/skylight.html">skylight</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   longitude latitude tcc                date sky_condition sun_azimuth</span></span>
+<span><span class="co">#&gt; 1    -20.00       70   1 2021-02-01 17:00:00      9.898097         229</span></span>
+<span><span class="co">#&gt; 2    -19.75       70   1 2021-02-01 17:00:00      9.977752         229</span></span>
+<span><span class="co">#&gt; 3    -19.50       70   1 2021-02-01 17:00:00      9.947538         229</span></span>
+<span><span class="co">#&gt; 4    -19.25       70   1 2021-02-01 17:00:00      9.675888         229</span></span>
+<span><span class="co">#&gt; 5    -19.00       70   1 2021-02-01 17:00:00      9.475928         230</span></span>
+<span><span class="co">#&gt; 6    -18.75       70   1 2021-02-01 17:00:00      9.474829         230</span></span>
+<span><span class="co">#&gt;   sun_altitude sun_illuminance moon_azimuth moon_altitude moon_illuminance</span></span>
+<span><span class="co">#&gt; 1           -4        2.511910            2           -18     5.917033e-13</span></span>
+<span><span class="co">#&gt; 2           -4        2.332974            3           -18     5.892869e-13</span></span>
+<span><span class="co">#&gt; 3           -4        2.190011            3           -18     5.936460e-13</span></span>
+<span><span class="co">#&gt; 4           -4        2.106323            3           -18     6.132194e-13</span></span>
+<span><span class="co">#&gt; 5           -4        2.011334            3           -18     6.294024e-13</span></span>
+<span><span class="co">#&gt; 6           -4        1.880456            4           -18     6.329976e-13</span></span>
+<span><span class="co">#&gt;   moon_fraction total_illuminance</span></span>
+<span><span class="co">#&gt; 1            82          2.511960</span></span>
+<span><span class="co">#&gt; 2            82          2.333024</span></span>
+<span><span class="co">#&gt; 3            82          2.190061</span></span>
+<span><span class="co">#&gt; 4            82          2.106374</span></span>
+<span><span class="co">#&gt; 5            82          2.011387</span></span>
+<span><span class="co">#&gt; 6            82          1.880509</span></span></code></pre></div>
 <p>I can now plot the sky illuminance as corrected for cloud cover using
 the internal scaling factor. Keep in mind that this is a rather ad-hoc
 solution. For proper results external empirical relationships should be

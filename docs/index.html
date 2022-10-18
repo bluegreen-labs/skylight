@@ -100,7 +100,7 @@
 <a class="anchor" aria-label="anchor" href="#skylight-"></a>
 </h1></div>
 
-<p>The <code>skylight</code> package returns sky illuminance parameters for both the sun and the moon, for a given date/time and location. In addition, ancillary parameters such as sun and moon azimuth and altitude are provided. The code is an almost verbatim transcription of the work by Janiczek and DeYoung (1987), published in the US Naval observatory circular. An online copy of this manuscripts can be found on the internet archive (<a href="https://archive.org/details/DTIC_ADA182110" class="external-link uri">https://archive.org/details/DTIC_ADA182110</a>)</p>
+<p>The <code>skylight</code> package returns sky illuminance parameters for both the sun and the moon, for a given date/time and location. In addition, ancillary parameters such as sun and moon azimuth and altitude are provided. The code is an almost verbatim transcription of the work by Janiczek and DeYoung (1987), published in the US Naval observatory circular. An online copy of this manuscripts can be found on the internet archive (<a href="https://archive.org/details/DTIC_ADA182110" class="external-link uri">https://archive.org/details/DTIC_ADA182110</a>).</p>
 <p>Very few adjustments to the original code where made to ensure equivalency in results. As such, most of the naming of the subroutines and variables was retained. However, some changes were made to the main routine and subroutines to ensure vectorization of the code to speed up batch processing of data.</p>
 <p>With time more detailed information will be added to all functions, including references to subroutine functions and more transparent variable names, while limiting variable recycling (a common practice in the original code base). The code delivers equivalent results with the programme certification values published in Table A of Janiczek and DeYoung (1987), as such all original limitations remain (see below).</p>
 <div class="section level2">
@@ -113,13 +113,13 @@
 <li>In some circumstances calculated illuminance values might differ from real light levels of a factor 10 or more.</li>
 <li>Strong coherence and proper time keeping is required, there is a strong requirement to provide dates in GMT, corrections based upon latitude (not civil time zone) should be executed before processing. No warnings are provided.</li>
 </ul>
-<p>Yet, overall the model should provide a fast approximation where more computationally expensive models would only provide marginal benefits. For a full description of the model I refer to Janiczek and DeYoung (1987).</p>
+<p>Yet, overall the model should provide a fast approximation where more computationally expensive models would only provide marginal benefits for most applications. For a full description of the model I refer to Janiczek and DeYoung (1987).</p>
 </div>
 <div class="section level2">
 <h2 id="how-to-cite-this-package-in-your-article">How to cite this package in your article<a class="anchor" aria-label="anchor" href="#how-to-cite-this-package-in-your-article"></a>
 </h2>
 <blockquote>
-<p>Koen Hufkens. (2022). bluegreen-labs/skylight: skylight CRAN release v1.0 (v1.0). Zenodo. <a href="https://doi.org/10.5281/zenodo.xxxx" class="external-link uri">https://doi.org/10.5281/zenodo.xxxx</a></p>
+<p>Koen Hufkens. (2022). bluegreen-labs/skylight: skylight CRAN release v1.0 (v1.0). Zenodo. <a href="https://doi.org/10.5281/zenodo.xxxx" class="external-link uri">https://doi.org/10.5281/zenodo.xxxx</a>, in addition reference the original work by Janiczek and DeYoung (1987, see below)</p>
 </blockquote>
 </div>
 <div class="section level2">
@@ -162,10 +162,10 @@
 <span><span class="co"># calculate sky illuminance values for</span></span>
 <span><span class="co"># a single date/time and location</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/skylight.html">skylight</a></span><span class="op">(</span></span>
-<span>      <span class="op">-</span><span class="fl">135.8</span>,</span>
-<span>      <span class="op">-</span><span class="fl">23.4</span>,</span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"1986-12-18 21:00:00"</span>, tz <span class="op">=</span> <span class="st">"GMT"</span><span class="op">)</span>,</span>
-<span>      <span class="fl">1</span></span>
+<span>      longitude <span class="op">=</span> <span class="op">-</span><span class="fl">135.8</span>,</span>
+<span>      latitude <span class="op">=</span> <span class="op">-</span><span class="fl">23.4</span>,</span>
+<span>      date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"1986-12-18 21:00:00"</span>, tz <span class="op">=</span> <span class="st">"GMT"</span><span class="op">)</span>,</span>
+<span>      sky_conditions <span class="op">=</span> <span class="fl">1</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -197,6 +197,26 @@
 <span><span class="va">input</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">df</span><span class="op">)</span></span></code></pre></div>
 <p>Plotting this data results in</p>
 <p><img src="https://bluegreen-labs.github.io/skylight/articles/skylight_files/figure-html/unnamed-chukn-3-1.png"></p>
+</div>
+<div class="section level3">
+<h3 id="piped-data-workflow">Piped data workflow<a class="anchor" aria-label="anchor" href="#piped-data-workflow"></a>
+</h3>
+<p><code>skylight</code> supports piped data frames with appropriatedly named columns as input to the function. This allows for fast processing of large data frames, with the added advantage that input parameters are returned with the calculated data.</p>
+<p>Note that you need a data frame with the three most basic parameters: - longitude - latitude - date named as such (all lower case). The function will complain if it doesn’t find the required column names. Also note that due to the priority of the piped construction over the other parameters all parameters should be named when calling the function in a conventional way.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># recreating the data frame with parameters</span></span>
+<span><span class="co"># as before</span></span>
+<span><span class="va">input</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  longitude <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  latitude <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  date <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"2020-06-18 00:00:00"</span>, tz <span class="op">=</span> <span class="st">"GMT"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">*</span><span class="fl">24</span><span class="op">*</span><span class="fl">3600</span>, <span class="fl">1800</span><span class="op">)</span>,</span>
+<span>  sky_condition <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># but now using the piped approach to calculate</span></span>
+<span><span class="co"># all values</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">input</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/skylight.html">skylight</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
