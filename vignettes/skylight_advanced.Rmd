@@ -62,7 +62,21 @@ Downloaded data can be read with the `terra` package. The above downloaded data 
 data set in the package. You can therefore use this included data in this workflow. Check out the `ecmwfr`
 package to download your own custom data.
 
-```{r}
+```{r echo = FALSE}
+library(terra)
+
+# read in data
+era5 <- try(terra::rast(system.file(package = "skylight", "extdata/era5.nc")))
+
+if(inherits(era5, "try-error")){
+  process <- FALSE
+} else {
+  process <- TRUE
+}
+```
+
+
+```{r eval = FALSE}
 library(terra)
 
 # read in data
@@ -75,7 +89,7 @@ era5 <- terra::rast(system.file(package = "skylight", "extdata/era5.nc"))
 However, the spatial format needs to be converted to a data frame for use
 with the `skylight` package.
 
-```{r}
+```{r eval = process}
 library(dplyr)
 
 # create a data frame with values
@@ -92,7 +106,7 @@ df$date <- time(era5)
 print(head(df))
 ```
 
-```{r}
+```{r eval = process}
 library(skylight)
 
 # calculate sky illuminance values for
@@ -116,7 +130,7 @@ print(head(df))
 
 I can now plot the sky illuminance as corrected for cloud cover using the internal scaling factor. Keep in mind that this is a rather ad-hoc solution. For proper results external empirical relationships should be established between the model response and measured illuminance values under varying cloud cover conditions.
 
-```{r}
+```{r eval = process}
 library(ggplot2)
 library(rnaturalearth)
 
