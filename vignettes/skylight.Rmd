@@ -83,7 +83,7 @@ ggplot(input) +
   labs(
     title = "Diurnal cycles of total illuminance",
     subtitle = "(including the effect of moon contributions)",
-    y = "Illuminance (log(lux))",
+    y = "Hour",
     x = ""
   ) +
   theme(

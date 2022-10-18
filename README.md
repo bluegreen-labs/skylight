@@ -3,6 +3,8 @@
 [![R-CMD-check](https://github.com/bluegreen-labs/skylight/workflows/R-CMD-check/badge.svg)](https://github.com/bluegreen-labs/skylight/actions)
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/skylight)](https://cran.r-project.org/package=skylight)
 [![](https://cranlogs.r-pkg.org/badges/skylight)](https://cran.r-project.org/package=skylight)
+[![codecov](https://codecov.io/gh/bluegreen-labs/skylight/branch/main/graph/badge.svg?token=66IIX0HL7K)](https://codecov.io/gh/bluegreen-labs/skylight)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7222045.svg)](https://doi.org/10.5281/zenodo.7222045)
 
 The `skylight` package returns sky illuminance parameters for both the sun and 
 the moon, for a given date/time and location. In addition, ancillary 
@@ -36,7 +38,7 @@ For a full description of the model I refer to Janiczek and DeYoung (1987).
 
 ## How to cite this package in your article
 
-> Koen Hufkens. (2022). bluegreen-labs/skylight: skylight CRAN release v1.0 (v1.0). Zenodo. <https://doi.org/10.5281/zenodo.xxxx>, in addition reference the original work by Janiczek and DeYoung (1987, see below)
+> Koen Hufkens. (2022). bluegreen-labs/skylight: skylight: A Simple Sky Illuminance Model. Zenodo. <https://doi.org/10.5281/zenodo.7222045>, in addition reference the original work by Janiczek and DeYoung (1987, see below)
 
 ## Installation
 
