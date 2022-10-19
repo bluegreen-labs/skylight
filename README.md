@@ -160,6 +160,16 @@ input <- data.frame(
 df <- input |> skylight()
 ```
 
+### Speed and other considerations
+
+The current code, using the vectorized piped approach, is sufficiently fast to
+support larger data sets. For example a more advanced cloud cover correction is
+described in the vignettes and taking this analysis as inspiration animations
+of illuminance can be made (as shown below).
+
+![](https://raw.githubusercontent.com/bluegreen-labs/skylight/main/map.gif)
+
+
 ## Licensing
 
 The `skylight` package is distributed under a AGPLv3 license, while the skylight model code resides in the public domain made available by Janiczek and DeYoung (1987). The logo is in part based upon Emoji One v2.0 iconography.
