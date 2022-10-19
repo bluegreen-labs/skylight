@@ -91,7 +91,7 @@ df <- skylight(
       longitude = -135.8,
       latitude = -23.4,
       date = as.POSIXct("1986-12-18 21:00:00", tz = "GMT"),
-      sky_conditions = 1
+      sky_condition = 1
     )
 ```
 
