@@ -8,18 +8,23 @@
 
 The `skylight` package returns sky illuminance parameters for both the sun and 
 the moon, for a given date/time and location. In addition, ancillary 
-parameters such as sun and moon azimuth and altitude are provided. The code is an almost verbatim transcription of the work by Janiczek and DeYoung
-(1987), published in the US Naval observatory circular. An online copy of this
+parameters such as sun and moon azimuth and altitude are provided. The code is 
+an almost verbatim transcription of the work by Janiczek and DeYoung (1987), 
+published in the US Naval observatory circular. An online copy of this 
 manuscripts can be found on the internet archive 
 (<https://archive.org/details/DTIC_ADA182110>).
 
-Very few adjustments to the original code where made to ensure equivalency in results. As such, most of the naming of the subroutines and variables was retained. However, some changes were made to the main routine and subroutines to ensure 
-vectorization of the code to speed up batch processing of data. 
+Very few adjustments to the original code where made to ensure equivalency in 
+results. As such, most of the naming of the subroutines and variables was 
+retained. However, some changes were made to the main routine and subroutines 
+to ensure vectorization of the code to speed up batch processing of data. 
 
 With time more detailed information will be added to all functions, including 
 references to subroutine functions and more transparent variable names, while
-limiting variable recycling (a common practice in the original code base). The code delivers equivalent results with the programme certification values published in 
-Table A of Janiczek and DeYoung (1987), as such all original limitations remain (see below).
+limiting variable recycling (a common practice in the original code base). 
+The code delivers equivalent results with the programme certification values 
+published in Table A of Janiczek and DeYoung (1987), as such all original 
+limitations remain (see below).
 
 ## Limitations
 

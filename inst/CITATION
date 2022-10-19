@@ -1,13 +1,13 @@
 citHeader("To cite skylight in publications use:")
 
 citEntry(entry = "Misc",
-         title = "skylight: a package to calculate sky illuminance in R",
+         title = "skylight: A Simple Sky Illuminance Model in R",
          author = personList(as.person("Koen Hufkens")),
          year = "2022",
-         doi = "10.5281/zenodo.7012728",
+         doi = "10.5281/zenodo.7222045",
          url = "https://bluegreen-labs.github.io/skylight/",
          textVersion  =
            paste("Hufkens K. (2022).",
-                 "skylight: a package to calculate sky illuminance in R",
-                 "https://doi.org/10.5281/zenodo.xxxxx")
+                 "skylight: A Simple Sky Illuminance Model in R",
+                 "https://doi.org/10.5281/zenodo.7222045")
          )

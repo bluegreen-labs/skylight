@@ -87,11 +87,11 @@ skylight <- function(
   hour_dec <- hour + minutes/60
 
   # hours as a long integer
-  H <- hour * 100 + minutes # hhmm (hour)
+  H <- hour * 100 + minutes
 
   # constant values
   RD <- 57.29577951
-  DR <- 1.0 / RD
+  DR <- 1 / RD
   CE <- 0.91775
   SE <- 0.39715
 
@@ -99,14 +99,14 @@ skylight <- function(
   latitude <-  latitude * DR
 
   J <- 367 * year -
-    as.integer( 7 * (year + as.integer((month + 9)/12))/4) +
+    as.integer(7 * (year + as.integer((month + 9)/12))/4) +
     as.integer(275 * month/9) +
     day - 730531
 
   # DT requires time zone to be UTC/GMT
-  DT <- -longitude/360.0
+  DT <- -longitude/360
 
-  E <- hour_dec/24.0 - DT - longitude/360.0
+  E <- hour_dec/24 - DT - longitude/360
   D <- J - 0.5 + E
 
   #---- calculate solar parameters ----
@@ -118,7 +118,7 @@ skylight <- function(
     SE
   )
 
-  solar_parameters$T <- solar_parameters$T + 360.0 * E + longitude
+  solar_parameters$T <- solar_parameters$T + 360 * E + longitude
   solar_parameters$H <- solar_parameters$T - solar_parameters$AS
 
   out_altaz <- altaz(
@@ -145,7 +145,8 @@ skylight <- function(
     DR
     )
 
-  # atmospheric calculations?
+  # atmospheric calculations
+  # look up references
   M <- atmos(
     HA,
     DR
@@ -157,7 +158,7 @@ skylight <- function(
   # provided by sky_condition. The default does not
   # scale the value, all other values > 1 scale the
   # illuminance values
-  solar_illuminance <- 133775.0 * M / sky_condition
+  solar_illuminance <- 133775 * M / sky_condition
 
   # Solar azimuth in degrees
   solar_azimuth <- as.integer(AZ)
@@ -200,7 +201,7 @@ skylight <- function(
   HA <- sign(HA)*as.integer(abs(HA)+0.5)
   E <- acos(cos(lunar_parameters$V - solar_parameters$LS) * lunar_parameters$CB)
   P <- 0.892 * exp(-3.343/((tan(E/2.0))^0.632)) + 0.0344 * (sin(E) - E * cos(E))
-  P <- 0.418 * P/(1.0-0.005 * cos(E) - 0.03 * sin(Z))
+  P <- 0.418 * P/(1 - 0.005 * cos(E) - 0.03 * sin(Z))
 
   # Lunar illuminance in lux, scaled using the value
   # provided by sky_condition. The default does not
@@ -215,7 +216,7 @@ skylight <- function(
   lunar_altitude <- as.integer(HA)
 
   # The percentage of the moon illuminated
-  lunar_fraction <- as.integer(50.*(1.0-cos(E))+0.5)
+  lunar_fraction <- as.integer(50. * (1 - cos(E)) + 0.5)
 
   # Total sky illuminance, this value is of importance when
   # considering dusk/dawn conditions mostly, i.e. during hand-off
