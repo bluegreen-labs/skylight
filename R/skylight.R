@@ -99,16 +99,13 @@ skylight <- function(
   # calculate hours as a decimal number
   hour_dec <- hour + minutes/60
 
-  # hours as a long integer
-  H <- hour * 100 + minutes
-
   # constant values
   RD <- 57.29577951
   DR <- 1 / RD
   CE <- 0.91775
   SE <- 0.39715
 
-  # run program
+  # convert latitude
   latitude <-  latitude * DR
 
   J <- 367 * year -
@@ -131,10 +128,16 @@ skylight <- function(
     SE
   )
 
+  # in place adjustments
   solar_parameters$T <- solar_parameters$T + 360 * E + longitude
   solar_parameters$H <- solar_parameters$T - solar_parameters$AS
 
-  out_altaz <- altaz(
+  # calculate celestial body
+  # parameters all these subroutines
+  # need proper clarifications as
+  # not provided in the original work
+  # and taken as is
+  altaz_parameters <- altaz(
     solar_parameters$DS,
     solar_parameters$H,
     solar_parameters$SD,
@@ -144,17 +147,13 @@ skylight <- function(
     RD
   )
 
-  H <- out_altaz$H
-  AZ <- out_altaz$AZ
-  Z <- out_altaz$H * DR
+  H <- altaz_parameters$H
+  AZ <- altaz_parameters$AZ
+  Z <- altaz_parameters$H * DR
 
-  # HERE HA GETS RECYCLED POOR
-  # FORM FIX, MESSES UP CALCULATIONS
-  # IF NOT PROPERLY ACCOUNTED FOR
-  # SAME FOR THE LUNAR STUFF
   # solar altitude calculation
   HA <- refr(
-    out_altaz$H,
+    altaz_parameters$H,
     DR
     )
 
@@ -191,7 +190,7 @@ skylight <- function(
 
   lunar_parameters$H <- solar_parameters$T - lunar_parameters$AS
 
-  out_altaz <- altaz(
+  altaz_parameters <- altaz(
     lunar_parameters$DS,
     lunar_parameters$H,
     lunar_parameters$SD,
@@ -202,8 +201,8 @@ skylight <- function(
   )
 
   # corrections?
-  Z <- out_altaz$H * DR
-  H <- out_altaz$H - 0.95 * cos(out_altaz$H * DR)
+  Z <- altaz_parameters$H * DR
+  H <- altaz_parameters$H - 0.95 * cos(altaz_parameters$H * DR)
 
   # calculate lunar altitude
   HA <- refr(H, DR)
@@ -223,7 +222,7 @@ skylight <- function(
   lunar_illuminance <- P * M / sky_condition
 
   # Lunar azimuth in degrees
-  lunar_azimuth <- as.integer(out_altaz$AZ)
+  lunar_azimuth <- as.integer(altaz_parameters$AZ)
 
   # Lunar altitude in degrees
   lunar_altitude <- as.integer(HA)
