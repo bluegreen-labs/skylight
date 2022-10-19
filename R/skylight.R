@@ -148,11 +148,11 @@ skylight <- function(
   )
 
   H <- altaz_parameters$H
-  AZ <- altaz_parameters$AZ
   Z <- altaz_parameters$H * DR
+  solar_azimuth <- altaz_parameters$AZ
 
   # solar altitude calculation
-  HA <- refr(
+  solar_altitude <- refr(
     altaz_parameters$H,
     DR
     )
@@ -160,23 +160,15 @@ skylight <- function(
   # atmospheric calculations
   # look up references
   M <- atmos(
-    HA,
+    solar_altitude,
     DR
   )
-
-  HA <- sign(HA) * as.integer(abs(HA) + 0.5)
 
   # Solar illuminance in lux, scaled using the value
   # provided by sky_condition. The default does not
   # scale the value, all other values > 1 scale the
   # illuminance values
   solar_illuminance <- 133775 * M / sky_condition
-
-  # Solar azimuth in degrees
-  solar_azimuth <- as.integer(AZ)
-
-  # Solar altitude in degrees
-  solar_altitude <- as.integer(HA)
 
   #---- calculate lunar parameters ----
   lunar_parameters <- moon(
@@ -205,12 +197,11 @@ skylight <- function(
   H <- altaz_parameters$H - 0.95 * cos(altaz_parameters$H * DR)
 
   # calculate lunar altitude
-  HA <- refr(H, DR)
+  lunar_altitude <- refr(H, DR)
 
   # atmospheric conditions?
-  M <- atmos(HA, DR)
+  M <- atmos(lunar_altitude, DR)
 
-  HA <- sign(HA)*as.integer(abs(HA)+0.5)
   E <- acos(cos(lunar_parameters$V - solar_parameters$LS) * lunar_parameters$CB)
   P <- 0.892 * exp(-3.343/((tan(E/2.0))^0.632)) + 0.0344 * (sin(E) - E * cos(E))
   P <- 0.418 * P/(1 - 0.005 * cos(E) - 0.03 * sin(Z))
@@ -221,14 +212,13 @@ skylight <- function(
   # illuminance values
   lunar_illuminance <- P * M / sky_condition
 
-  # Lunar azimuth in degrees
-  lunar_azimuth <- as.integer(altaz_parameters$AZ)
-
-  # Lunar altitude in degrees
-  lunar_altitude <- as.integer(HA)
+  # Lunar azimuth/altitude in degrees
+  # again forced to integers seems
+  # check if this requirement can be dropped
+  lunar_azimuth <- altaz_parameters$AZ
 
   # The percentage of the moon illuminated
-  lunar_fraction <- as.integer(50. * (1 - cos(E)) + 0.5)
+  lunar_fraction <- 50 * (1 - cos(E))
 
   # Total sky illuminance, this value is of importance when
   # considering dusk/dawn conditions mostly, i.e. during hand-off
