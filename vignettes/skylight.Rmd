@@ -79,7 +79,9 @@ ggplot(input) +
       fill = log(total_illuminance)
     )
   ) +
-  scale_fill_viridis_c() +
+  scale_fill_viridis_c(
+    option = "B"
+  ) +
   labs(
     title = "Diurnal cycles of total illuminance",
     subtitle = "(including the effect of moon contributions)",

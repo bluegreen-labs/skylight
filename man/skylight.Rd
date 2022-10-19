@@ -24,6 +24,10 @@ can be considered a scaling factor, substituting it with the (inverse)
 slope parameter of an empirical fit should render more accurate results.
 (this can be a single value or vector of values)}
 }
+\value{
+Sun and moon illuminance values (in lux), as well as their respective
+location in the sky (altitude, azimuth).
+}
 \description{
 Function returns sky illuminance parameters for
 both the sun and the moon, in addition to some
@@ -43,4 +47,15 @@ are not trapped.
 
 The original code has been vectorized, as such vectors of
 location, time and/or sky conditions can be provided.
+}
+\examples{
+ df <- skylight(
+  longitude = -135.8,
+  latitude = -23.4,
+  date = as.POSIXct("1986-12-18 21:00:00", tz = "GMT"),
+  sky_condition = 1
+)
+
+print(df)
+
 }

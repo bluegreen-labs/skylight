@@ -109,6 +109,13 @@ slope parameter of an empirical fit should render more accurate results.
 (this can be a single value or vector of values)</p></dd>
 
 </dl></div>
+    <div id="value">
+    <h2>Value</h2>
+    
+
+<p>Sun and moon illuminance values (in lux), as well as their respective
+location in the sky (altitude, azimuth).</p>
+    </div>
     <div id="details">
     <h2>Details</h2>
     <p>The code is almost verbatim transcription of the work
@@ -123,6 +130,23 @@ are not trapped.</p>
 location, time and/or sky conditions can be provided.</p>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span> <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">skylight</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  longitude <span class="op">=</span> <span class="op">-</span><span class="fl">135.8</span>,</span></span>
+<span class="r-in"><span>  latitude <span class="op">=</span> <span class="op">-</span><span class="fl">23.4</span>,</span></span>
+<span class="r-in"><span>  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"1986-12-18 21:00:00"</span>, tz <span class="op">=</span> <span class="st">"GMT"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  sky_condition <span class="op">=</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sun_azimuth sun_altitude sun_illuminance moon_azimuth moon_altitude</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         346           90        123786.3          282           -62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   moon_illuminance moon_fraction total_illuminance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1.066142e-27            94          123786.3</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

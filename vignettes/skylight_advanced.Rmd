@@ -116,7 +116,7 @@ df <- df |>
     # values of cloud cover lower than
     # 30% are considered clear conditions
     # for the skylight model - adjust tcc values
-    tcc = ifelse(tcc <= 0.3, 0, 1),
+    tcc = ifelse(tcc <= 0.3, 1, tcc),
     # rescale total cloud cover between 1 - 10
     # the acceptable range for skylight's
     # sky_condition parameter
@@ -146,6 +146,7 @@ ggplot(df) +
     )
   ) +
   scale_fill_viridis_c(
+    option = "B",
     name = "Total illuminance (log(lux))"
   ) +
   geom_sf(

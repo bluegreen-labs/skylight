@@ -31,7 +31,20 @@
 #'  slope parameter of an empirical fit should render more accurate results.
 #'  (this can be a single value or vector of values)
 #'
+#' @return Sun and moon illuminance values (in lux), as well as their respective
+#' location in the sky (altitude, azimuth).
+#'
 #' @export
+#' @examples
+#'  df <- skylight(
+#'   longitude = -135.8,
+#'   latitude = -23.4,
+#'   date = as.POSIXct("1986-12-18 21:00:00", tz = "GMT"),
+#'   sky_condition = 1
+#' )
+#'
+#' print(df)
+#'
 
 skylight <- function(
     .data,
