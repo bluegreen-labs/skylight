@@ -94,7 +94,6 @@ skylight <- function(
   day <- as.numeric(format(date,"%d"))
   hour <- as.numeric(format(date,"%H"))
   minutes <- as.numeric(format(date, "%M"))
-  time_zone <- as.numeric(format(date, "%z"))/100
 
   # calculate hours as a decimal number
   hour_dec <- hour + minutes/60
