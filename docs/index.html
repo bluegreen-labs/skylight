@@ -22,7 +22,8 @@
 <meta property="og:description" content="This package is a simple sky illuminance model which calculates 
  illuminance values (in lux) for both sun and moon. The model is a verbatim 
  translation of the code included in: Computer Programs for Sun and Moon 
- Illuminance With Contingent Tables and Diagrams by Janiczek and DeYoung (1987).">
+ Illuminance With Contingent Tables and Diagrams by Janiczek and DeYoung (1987,
+ &lt;https://archive.org/details/DTIC_ADA182110&gt;).">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
 </head>
@@ -127,6 +128,9 @@
 <div class="section level3">
 <h3 id="stable-release">stable release<a class="anchor" aria-label="anchor" href="#stable-release"></a>
 </h3>
+<blockquote>
+<p>Currently being reviewed for release on CRAN !</p>
+</blockquote>
 <p>To install the current stable release use a CRAN repository:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"skylight"</span><span class="op">)</span></span>
@@ -164,7 +168,7 @@
 <span>      longitude <span class="op">=</span> <span class="op">-</span><span class="fl">135.8</span>,</span>
 <span>      latitude <span class="op">=</span> <span class="op">-</span><span class="fl">23.4</span>,</span>
 <span>      date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"1986-12-18 21:00:00"</span>, tz <span class="op">=</span> <span class="st">"GMT"</span><span class="op">)</span>,</span>
-<span>      sky_conditions <span class="op">=</span> <span class="fl">1</span></span>
+<span>      sky_condition <span class="op">=</span> <span class="fl">1</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
