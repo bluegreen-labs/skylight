@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r echo = FALSE}
+```{r}
 # check version number
 process <- as.numeric(version$major) + as.numeric(version$minor)/10 > 4.2
 ```
@@ -99,7 +99,7 @@ ggplot(input) +
 
 Condensing this figure to only the mean half hourly value for a full moon captures the contributions of both sun and moon to the diurnal profile.
 
-```{r echo = FALSE, eval = process}
+```{r echo = FALSE, warning=FALSE, message=FALSE, eval = process}
 library(dplyr)
 library(tidyr)
 
@@ -123,7 +123,7 @@ df <- input |>
     names_to = "illuminance"
   )
 
-ggplot(df) +
+p <- ggplot(df) +
   geom_path(
     aes(
       hour,
@@ -142,6 +142,7 @@ ggplot(df) +
     x = "Hour (centered on midnight)"
   )
 
+print(p)
 ```
 
 ### Piped data workflow

@@ -105,12 +105,15 @@ Hufkens</h4>
 
     
     
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># check version number</span></span>
+<span><span class="va">process</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">version</span><span class="op">$</span><span class="va">major</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">version</span><span class="op">$</span><span class="va">minor</span><span class="op">)</span><span class="op">/</span><span class="fl">10</span> <span class="op">&gt;</span> <span class="fl">4.2</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="single-datetime-and-location">Single date/time and location<a class="anchor" aria-label="anchor" href="#single-datetime-and-location"></a>
 </h3>
 <p>skylight values can be calculated for a single point and date using
 the below call. This will generate a data frame with model values.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load the library</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bluegreen-labs/skylight" class="external-link">skylight</a></span><span class="op">)</span></span>
 <span></span>
@@ -125,9 +128,9 @@ the below call. This will generate a data frame with model values.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   sun_azimuth sun_altitude sun_illuminance moon_azimuth moon_altitude</span></span>
-<span><span class="co">#&gt; 1         346      89.9565        123786.3          282     -61.99004</span></span>
+<span><span class="co">#&gt; 1         346           90        123786.3          282           -62</span></span>
 <span><span class="co">#&gt;   moon_illuminance moon_fraction total_illuminance</span></span>
-<span><span class="co">#&gt; 1     1.066142e-27      93.94848          123786.3</span></span></code></pre></div>
+<span><span class="co">#&gt; 1     1.066142e-27            94          123786.3</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="multiple-datestimes-andor-locations">Multiple dates/times and/or locations<a class="anchor" aria-label="anchor" href="#multiple-datestimes-andor-locations"></a>
@@ -135,7 +138,7 @@ the below call. This will generate a data frame with model values.</p>
 <p>The skylight function is vectorized, so you can provide vectors of
 input parameters instead of using a loop and the above function
 call.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Generate a dataset with 15 minute values</span></span>
 <span><span class="co"># for approximately two months</span></span>
 <span><span class="va">input</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
@@ -156,25 +159,25 @@ call.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   sun_azimuth sun_altitude sun_illuminance moon_azimuth moon_altitude</span></span>
-<span><span class="co">#&gt; 1         360   -16.627692    2.872734e-05           40    -18.193474</span></span>
-<span><span class="co">#&gt; 2           7   -16.349941    3.874383e-05           46    -14.953394</span></span>
-<span><span class="co">#&gt; 3          14   -15.476415    9.949008e-05           52    -11.355126</span></span>
-<span><span class="co">#&gt; 4          21   -14.029282    4.779034e-04           58     -7.453916</span></span>
-<span><span class="co">#&gt; 5          28   -12.043200    4.163346e-03           64     -3.301080</span></span>
-<span><span class="co">#&gt; 6          34    -9.561923    6.272634e-02           69      1.419424</span></span>
+<span><span class="co">#&gt; 1         360          -17    2.872734e-05           40           -18</span></span>
+<span><span class="co">#&gt; 2           7          -16    3.874383e-05           46           -15</span></span>
+<span><span class="co">#&gt; 3          14          -15    9.949008e-05           52           -11</span></span>
+<span><span class="co">#&gt; 4          21          -14    4.779034e-04           58            -7</span></span>
+<span><span class="co">#&gt; 5          28          -12    4.163346e-03           64            -3</span></span>
+<span><span class="co">#&gt; 6          34          -10    6.272634e-02           69             1</span></span>
 <span><span class="co">#&gt;   moon_illuminance moon_fraction total_illuminance</span></span>
-<span><span class="co">#&gt; 1     7.503453e-14      10.64874      0.0005287273</span></span>
-<span><span class="co">#&gt; 2     2.407014e-12      10.52276      0.0005387438</span></span>
-<span><span class="co">#&gt; 3     1.189855e-10      10.39738      0.0005994902</span></span>
-<span><span class="co">#&gt; 4     8.248541e-09      10.27262      0.0009779116</span></span>
-<span><span class="co">#&gt; 5     6.409745e-07      10.14848      0.0046639867</span></span>
-<span><span class="co">#&gt; 6     1.859100e-05      10.02496      0.0632449283</span></span>
+<span><span class="co">#&gt; 1     7.503453e-14            11      0.0005287273</span></span>
+<span><span class="co">#&gt; 2     2.407014e-12            11      0.0005387438</span></span>
+<span><span class="co">#&gt; 3     1.189855e-10            10      0.0005994902</span></span>
+<span><span class="co">#&gt; 4     8.248541e-09            10      0.0009779116</span></span>
+<span><span class="co">#&gt; 5     6.409745e-07            10      0.0046639867</span></span>
+<span><span class="co">#&gt; 6     1.859100e-05            10      0.0632449283</span></span>
 <span></span>
 <span><span class="co"># previous results are of the same dimension (rows)</span></span>
 <span><span class="co"># as the input data and can be bound together</span></span>
 <span><span class="co"># for easy plotting</span></span>
 <span><span class="va">input</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">input</span>, <span class="va">df</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">input</span><span class="op">)</span> <span class="op">+</span></span>
@@ -201,14 +204,6 @@ call.</p>
 <p>Condensing this figure to only the mean half hourly value for a full
 moon captures the contributions of both sun and moon to the diurnal
 profile.</p>
-<pre><code><span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     filter, lag</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span></code></pre>
 <p><img src="skylight_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 </div>
 <div class="section level3">
@@ -242,19 +237,19 @@ function in a conventional way.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   longitude latitude                date sky_condition sun_azimuth sun_altitude</span></span>
-<span><span class="co">#&gt; 1         0       50 2020-06-18 00:00:00             1         360   -16.627692</span></span>
-<span><span class="co">#&gt; 2         0       50 2020-06-18 00:30:00             1           7   -16.349941</span></span>
-<span><span class="co">#&gt; 3         0       50 2020-06-18 01:00:00             1          14   -15.476415</span></span>
-<span><span class="co">#&gt; 4         0       50 2020-06-18 01:30:00             1          21   -14.029282</span></span>
-<span><span class="co">#&gt; 5         0       50 2020-06-18 02:00:00             1          28   -12.043200</span></span>
-<span><span class="co">#&gt; 6         0       50 2020-06-18 02:30:00             1          34    -9.561923</span></span>
+<span><span class="co">#&gt; 1         0       50 2020-06-18 00:00:00             1         360          -17</span></span>
+<span><span class="co">#&gt; 2         0       50 2020-06-18 00:30:00             1           7          -16</span></span>
+<span><span class="co">#&gt; 3         0       50 2020-06-18 01:00:00             1          14          -15</span></span>
+<span><span class="co">#&gt; 4         0       50 2020-06-18 01:30:00             1          21          -14</span></span>
+<span><span class="co">#&gt; 5         0       50 2020-06-18 02:00:00             1          28          -12</span></span>
+<span><span class="co">#&gt; 6         0       50 2020-06-18 02:30:00             1          34          -10</span></span>
 <span><span class="co">#&gt;   sun_illuminance moon_azimuth moon_altitude moon_illuminance moon_fraction</span></span>
-<span><span class="co">#&gt; 1    2.872734e-05           40    -18.193474     7.503453e-14      10.64874</span></span>
-<span><span class="co">#&gt; 2    3.874383e-05           46    -14.953394     2.407014e-12      10.52276</span></span>
-<span><span class="co">#&gt; 3    9.949008e-05           52    -11.355126     1.189855e-10      10.39738</span></span>
-<span><span class="co">#&gt; 4    4.779034e-04           58     -7.453916     8.248541e-09      10.27262</span></span>
-<span><span class="co">#&gt; 5    4.163346e-03           64     -3.301080     6.409745e-07      10.14848</span></span>
-<span><span class="co">#&gt; 6    6.272634e-02           69      1.419424     1.859100e-05      10.02496</span></span>
+<span><span class="co">#&gt; 1    2.872734e-05           40           -18     7.503453e-14            11</span></span>
+<span><span class="co">#&gt; 2    3.874383e-05           46           -15     2.407014e-12            11</span></span>
+<span><span class="co">#&gt; 3    9.949008e-05           52           -11     1.189855e-10            10</span></span>
+<span><span class="co">#&gt; 4    4.779034e-04           58            -7     8.248541e-09            10</span></span>
+<span><span class="co">#&gt; 5    4.163346e-03           64            -3     6.409745e-07            10</span></span>
+<span><span class="co">#&gt; 6    6.272634e-02           69             1     1.859100e-05            10</span></span>
 <span><span class="co">#&gt;   total_illuminance</span></span>
 <span><span class="co">#&gt; 1      0.0005287273</span></span>
 <span><span class="co">#&gt; 2      0.0005387438</span></span>
