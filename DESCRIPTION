@@ -12,7 +12,7 @@ Authors@R: c(person(
               role = c("cph", "fnd"))
                )
 Maintainer: Koen Hufkens <koen.hufkens@gmail.com>
-Description: This package is a simple sky illuminance model which calculates 
+Description: A simple sky illuminance model which calculates 
  illuminance values (in lux) for both sun and moon. The model is a verbatim 
  translation of the code included in: Computer Programs for Sun and Moon 
  Illuminance With Contingent Tables and Diagrams by Janiczek and DeYoung (1987,
