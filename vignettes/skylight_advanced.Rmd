@@ -73,6 +73,11 @@ if(inherits(era5, "try-error")){
 } else {
   process <- TRUE
 }
+
+# if the file can be read but the version
+# is too old do not process
+v <- as.numeric(version$major) + as.numeric(version$minor)/10 > 4.2
+process <- !any(v, process)
 ```
 
 
@@ -92,14 +97,10 @@ with the `skylight` package.
 ```{r eval = process}
 library(dplyr)
 
-# note that below statements can be rewritten
-# with proper pipes |> in R >= 4.2 but for
-# backward compatibility this is not shown
-# here.
-
 # create a data frame with values
-df <- as.data.frame(era5, xy = TRUE)
-df <- rename(df,
+df <- era5 |> 
+  as.data.frame(xy = TRUE) |>
+  rename(df,
     longitude = "x",
     latitude = "y"
   )
@@ -115,8 +116,8 @@ library(skylight)
 
 # calculate sky illuminance values for
 # a single date/time and location
-df <- mutate(
-    df,
+df <- df |>
+  mutate(
     # values of cloud cover lower than
     # 30% are considered clear conditions
     # for the skylight model - adjust tcc values
@@ -128,7 +129,7 @@ df <- mutate(
   )
 
 # pipe into skylight
-df <- skylight(df)
+df <- df |> skylight()
 
 print(head(df))
 ```

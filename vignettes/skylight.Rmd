@@ -15,6 +15,9 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
+# check version number
+process <- as.numeric(version$major) + as.numeric(version$minor)/10 > 4.2
+
 ```
 
 ### Single date/time and location
@@ -95,7 +98,7 @@ ggplot(input) +
 
 Condensing this figure to only the mean half hourly value for a full moon captures the contributions of both sun and moon to the diurnal profile.
 
-```{r echo = FALSE}
+```{r echo = FALSE, eval = process}
 library(dplyr)
 library(tidyr)
 
