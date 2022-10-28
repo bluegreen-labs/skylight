@@ -114,7 +114,6 @@ skylight <- function(
   day <- as.numeric(format(date,"%d"))
   hour <- as.numeric(format(date,"%H"))
   minutes <- as.numeric(format(date, "%M"))
-  time_zone <- as.numeric(format(date, "%z"))/100
 
   # calculate hours as a decimal number
   hour_dec <- hour + minutes/60
@@ -133,10 +132,7 @@ skylight <- function(
     as.integer(275 * month/9) +
     day - 730531
 
-  # DT requires time zone to be UTC/GMT
-  DT <- -longitude/360
-
-  E <- hour_dec/24 - DT - longitude/360
+  E <- hour_dec/24
   D <- J - 0.5 + E
 
   #---- calculate solar parameters ----

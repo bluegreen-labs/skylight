@@ -49,6 +49,8 @@ For a full description of the model I refer to Janiczek and DeYoung (1987).
 
 ### stable release
 
+> Currently being reviewed for release on CRAN !
+
 To install the current stable release use a CRAN repository:
 
 ```r
