@@ -43,20 +43,17 @@ test_that("piped input tests", {
 
   # return a data frame if successful
   expect_type(
-    input |>
-      skylight(),
+      skylight(input),
     "list"
     )
 
   # fail on missing latitude
   expect_error(
-    input[,-2] |>
-      skylight()
+     skylight(input[,-2])
     )
 
   # return message on missing sky_conditions
   expect_message(
-    input[,-4] |>
-      skylight()
+    skylight(input[,-4])
   )
 })

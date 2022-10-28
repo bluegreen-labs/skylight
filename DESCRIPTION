@@ -1,7 +1,7 @@
 Package: skylight
 Type: Package
 Title: A Simple Sky Illuminance Model
-Version: 1.0
+Version: 1.1
 Authors@R: c(person(
                family = "Hufkens",
                given = "Koen",
@@ -19,7 +19,7 @@ Description: This package is a simple sky illuminance model which calculates
 URL: https://github.com/bluegreen-labs/skylight
 BugReports: https://github.com/bluegreen-labs/skylight/issues
 Depends:
-    R (>= 4.2)
+    R (>= 3.6)
 License: AGPL-3
 LazyData: false
 ByteCompile: true

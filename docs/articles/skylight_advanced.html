@@ -45,7 +45,7 @@
         <a class="external-link hidden-md hidden-lg" href="https://bluegreenlabs.org">
           <img src="https://bluegreenlabs.org/img/logo.png" id="hexlogo" alt="bluegreen labs"></a>
         <a class="navbar-brand" href="../index.html">
-           <i>skylight <small>v1.0</small></i>
+           <i>skylight <small>v1.1</small></i>
         </a>
       </div>
     </div>
@@ -96,7 +96,7 @@
                         <h4 data-toc-skip class="author">Koen
 Hufkens</h4>
             
-            <h4 data-toc-skip class="date">2022-10-19</h4>
+            <h4 data-toc-skip class="date">2022-10-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/bluegreen-labs/skylight/blob/HEAD/vignettes/skylight_advanced.Rmd" class="external-link"><code>vignettes/skylight_advanced.Rmd</code></a></small>
       <div class="hidden name"><code>skylight_advanced.Rmd</code></div>
@@ -176,10 +176,14 @@ use with the <code>skylight</code> package.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
 <span></span>
+<span><span class="co"># note that below statements can be rewritten</span></span>
+<span><span class="co"># with proper pipes |&gt; in R &gt;= 4.2 but for</span></span>
+<span><span class="co"># backward compatibility this is not shown</span></span>
+<span><span class="co"># here.</span></span>
+<span></span>
 <span><span class="co"># create a data frame with values</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">era5</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span>xy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">era5</span>, xy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span><span class="va">df</span>,</span>
 <span>    longitude <span class="op">=</span> <span class="st">"x"</span>,</span>
 <span>    latitude <span class="op">=</span> <span class="st">"y"</span></span>
 <span>  <span class="op">)</span></span>
@@ -200,8 +204,8 @@ use with the <code>skylight</code> package.</p>
 <span></span>
 <span><span class="co"># calculate sky illuminance values for</span></span>
 <span><span class="co"># a single date/time and location</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    <span class="va">df</span>,</span>
 <span>    <span class="co"># values of cloud cover lower than</span></span>
 <span>    <span class="co"># 30% are considered clear conditions</span></span>
 <span>    <span class="co"># for the skylight model - adjust tcc values</span></span>
@@ -210,9 +214,10 @@ use with the <code>skylight</code> package.</p>
 <span>    <span class="co"># the acceptable range for skylight's</span></span>
 <span>    <span class="co"># sky_condition parameter</span></span>
 <span>    sky_condition <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/rescale.html" class="external-link">rescale</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">tcc</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="co"># pipe into skylight</span></span>
-<span>  <span class="fu"><a href="../reference/skylight.html">skylight</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># pipe into skylight</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/skylight.html">skylight</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   longitude latitude       tcc                date sky_condition sun_azimuth</span></span>
@@ -223,19 +228,19 @@ use with the <code>skylight</code> package.</p>
 <span><span class="co">#&gt; 5    -19.00       70 0.9417698 2021-02-01 17:00:00      9.475928         230</span></span>
 <span><span class="co">#&gt; 6    -18.75       70 0.9416477 2021-02-01 17:00:00      9.474829         230</span></span>
 <span><span class="co">#&gt;   sun_altitude sun_illuminance moon_azimuth moon_altitude moon_illuminance</span></span>
-<span><span class="co">#&gt; 1           -4        2.511910            2           -18     5.917033e-13</span></span>
-<span><span class="co">#&gt; 2           -4        2.332974            3           -18     5.892869e-13</span></span>
-<span><span class="co">#&gt; 3           -4        2.190011            3           -18     5.936460e-13</span></span>
-<span><span class="co">#&gt; 4           -4        2.106323            3           -18     6.132194e-13</span></span>
-<span><span class="co">#&gt; 5           -4        2.011334            3           -18     6.294024e-13</span></span>
-<span><span class="co">#&gt; 6           -4        1.880456            4           -18     6.329976e-13</span></span>
+<span><span class="co">#&gt; 1    -3.983115        2.511910            2     -17.60419     5.917033e-13</span></span>
+<span><span class="co">#&gt; 2    -4.047531        2.332974            3     -17.60053     5.892869e-13</span></span>
+<span><span class="co">#&gt; 3    -4.112172        2.190011            3     -17.59649     5.936460e-13</span></span>
+<span><span class="co">#&gt; 4    -4.177039        2.106323            3     -17.59205     6.132194e-13</span></span>
+<span><span class="co">#&gt; 5    -4.242130        2.011334            3     -17.58723     6.294024e-13</span></span>
+<span><span class="co">#&gt; 6    -4.307443        1.880456            4     -17.58203     6.329976e-13</span></span>
 <span><span class="co">#&gt;   moon_fraction total_illuminance</span></span>
-<span><span class="co">#&gt; 1            82          2.511960</span></span>
-<span><span class="co">#&gt; 2            82          2.333024</span></span>
-<span><span class="co">#&gt; 3            82          2.190061</span></span>
-<span><span class="co">#&gt; 4            82          2.106374</span></span>
-<span><span class="co">#&gt; 5            82          2.011387</span></span>
-<span><span class="co">#&gt; 6            82          1.880509</span></span></code></pre></div>
+<span><span class="co">#&gt; 1      81.93127          2.511960</span></span>
+<span><span class="co">#&gt; 2      81.93127          2.333024</span></span>
+<span><span class="co">#&gt; 3      81.93127          2.190061</span></span>
+<span><span class="co">#&gt; 4      81.93127          2.106374</span></span>
+<span><span class="co">#&gt; 5      81.93127          2.011387</span></span>
+<span><span class="co">#&gt; 6      81.93127          1.880509</span></span></code></pre></div>
 <p>I can now plot the sky illuminance as corrected for cloud cover using
 the internal scaling factor. Keep in mind that this is a rather ad-hoc
 solution. For proper results external empirical relationships should be
