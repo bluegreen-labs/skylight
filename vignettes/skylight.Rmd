@@ -14,10 +14,11 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+```
 
+```{r echo = FALSE}
 # check version number
 process <- as.numeric(version$major) + as.numeric(version$minor)/10 > 4.2
-
 ```
 
 ### Single date/time and location
@@ -155,7 +156,7 @@ if it doesn't find the required column names. Also note that due to the priority
 of the piped construction over the other parameters **all parameters should be named**
 when calling the function in a conventional way.
 
-```{r}
+```{r eval = process}
 # recreating the data frame with parameters
 # as before
 input <- data.frame(

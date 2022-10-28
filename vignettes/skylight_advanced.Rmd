@@ -76,8 +76,8 @@ if(inherits(era5, "try-error")){
 
 # if the file can be read but the version
 # is too old do not process
-v <- as.numeric(version$major) + as.numeric(version$minor)/10 > 4.2
-process <- !any(v, process)
+v <- (as.numeric(version$major) + as.numeric(version$minor)/10) > 4.2
+process <- all(v, process)
 ```
 
 
@@ -100,7 +100,7 @@ library(dplyr)
 # create a data frame with values
 df <- era5 |> 
   as.data.frame(xy = TRUE) |>
-  rename(df,
+  rename(
     longitude = "x",
     latitude = "y"
   )

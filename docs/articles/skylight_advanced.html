@@ -176,14 +176,10 @@ use with the <code>skylight</code> package.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
 <span></span>
-<span><span class="co"># note that below statements can be rewritten</span></span>
-<span><span class="co"># with proper pipes |&gt; in R &gt;= 4.2 but for</span></span>
-<span><span class="co"># backward compatibility this is not shown</span></span>
-<span><span class="co"># here.</span></span>
-<span></span>
 <span><span class="co"># create a data frame with values</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">era5</span>, xy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span><span class="va">df</span>,</span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">era5</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span>xy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span></span>
 <span>    longitude <span class="op">=</span> <span class="st">"x"</span>,</span>
 <span>    latitude <span class="op">=</span> <span class="st">"y"</span></span>
 <span>  <span class="op">)</span></span>
@@ -204,8 +200,8 @@ use with the <code>skylight</code> package.</p>
 <span></span>
 <span><span class="co"># calculate sky illuminance values for</span></span>
 <span><span class="co"># a single date/time and location</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>    <span class="va">df</span>,</span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    <span class="co"># values of cloud cover lower than</span></span>
 <span>    <span class="co"># 30% are considered clear conditions</span></span>
 <span>    <span class="co"># for the skylight model - adjust tcc values</span></span>
@@ -217,7 +213,7 @@ use with the <code>skylight</code> package.</p>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># pipe into skylight</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/skylight.html">skylight</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/skylight.html">skylight</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   longitude latitude       tcc                date sky_condition sun_azimuth</span></span>
