@@ -12,7 +12,7 @@ Authors@R: c(person(
               role = c("cph", "fnd"))
                )
 Maintainer: Koen Hufkens <koen.hufkens@gmail.com>
-Description: Calculates illuminance values (in lux) for both sun and moon. The
+Description: A tool to calculate illuminance values (in lux) for both sun and moon. The
  model is a verbatim translation of the code by Janiczek and DeYoung (1987)
  <https://archive.org/details/DTIC_ADA182110>.
 URL: https://github.com/bluegreen-labs/skylight
