@@ -23,7 +23,6 @@ License: AGPL-3
 LazyData: false
 ByteCompile: true
 RoxygenNote: 7.2.1
-NeedsCompilation: yes
 Suggests:
     tidyr,
     rnaturalearth,
