@@ -1,0 +1,8 @@
+pandoc: 2.19.2
+pkgdown: 2.0.7
+pkgdown_sha: ~
+articles:
+  skylight: skylight.html
+  skylight_advanced: skylight_advanced.html
+last_built: 2023-02-12T15:26Z
+
