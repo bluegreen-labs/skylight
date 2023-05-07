@@ -126,7 +126,7 @@ input <- cbind(input, df)
 
 Plotting this data results in 
 
-![](https://bluegreen-labs.github.io/skylight/articles/skylight_files/figure-html/unnamed-chunk-3-1.png)
+![](https://bluegreen-labs.github.io/skylight/articles/skylight_files/figure-html/unnamed-chunk-4-1.png)
 
 ### Piped data workflow
 
