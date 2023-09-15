@@ -1,6 +1,6 @@
 citHeader("To cite skylight in publications use:")
 
-bibentry(bibstyle = "Misc",
+bibentry(bibtype = "Misc",
          title = "skylight: A Simple Sky Illuminance Model in R",
          author = c(as.person("Koen Hufkens")),
          year = "2022",
@@ -12,7 +12,7 @@ bibentry(bibstyle = "Misc",
                  "https://doi.org/10.5281/zenodo.7222045")
          )
 
-bibentry(bibstyle = "article",
+bibentry(bibtype = "article",
 	author = "Koen Hufkens and Christoph M. Meier and Ruben Evens and Josefa Aran Paredes and Hakan Karaardic and Stef Vercauteren and Ann Van Gysel and James W. Fox and Carlos Miguel Pacheco and Luis P. da Silva and Sandra Fernandes and Pedro Henriques and Concalo Elias and Luis T. Costa and Martin Poot and Lyndon Kearsley",
 	title = "Moonlight synchronous flights across three western palearctic swifts mirror size dependent prey preferences",
 	year = "2023",
