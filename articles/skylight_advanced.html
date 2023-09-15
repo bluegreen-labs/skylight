@@ -96,7 +96,7 @@
                         <h4 data-toc-skip class="author">Koen
 Hufkens</h4>
             
-            <h4 data-toc-skip class="date">2023-05-07</h4>
+            <h4 data-toc-skip class="date">2023-09-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/bluegreen-labs/skylight/blob/HEAD/vignettes/skylight_advanced.Rmd" class="external-link"><code>vignettes/skylight_advanced.Rmd</code></a></small>
       <div class="hidden name"><code>skylight_advanced.Rmd</code></div>
@@ -151,7 +151,7 @@ most of Europe.</p>
 above downloaded data is included as a demo data set in the package. You
 can therefore use this included data in this workflow. Check out the
 <code>ecmwfr</code> package to download your own custom data.</p>
-<pre><code><span><span class="co">#&gt; terra 1.7.29</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; terra 1.7.46</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
@@ -245,6 +245,15 @@ under varying cloud cover conditions.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/rnaturalearth/" class="external-link">rnaturalearth</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; The legacy packages maptools, rgdal, and rgeos, underpinning the sp package,</span></span>
+<span><span class="co">#&gt; which was just loaded, will retire in October 2023.</span></span>
+<span><span class="co">#&gt; Please refer to R-spatial evolution reports for details, especially</span></span>
+<span><span class="co">#&gt; https://r-spatial.org/r/2023/05/15/evolution4.html.</span></span>
+<span><span class="co">#&gt; It may be desirable to make the sf package available;</span></span>
+<span><span class="co">#&gt; package maintainers should consider adding sf to Suggests:.</span></span>
+<span><span class="co">#&gt; The sp package is now running under evolution status 2</span></span>
+<span><span class="co">#&gt;      (status 2 uses the sf package in place of rgdal)</span></span>
+<span><span class="co">#&gt; Support for Spatial objects (`sp`) will be deprecated in {rnaturalearth} and will be removed in a future release of the package. Please use `sf` objects with {rnaturalearth}. For example: `ne_download(returnclass = 'sf')`</span></span>
 <span></span>
 <span><span class="co"># country outlines</span></span>
 <span><span class="va">outlines</span> <span class="op">&lt;-</span> <span class="fu">rnaturalearth</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/rnaturalearth/reference/ne_countries.html" class="external-link">ne_countries</a></span><span class="op">(</span>returnclass <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span></span>
