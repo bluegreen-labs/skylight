@@ -26,6 +26,10 @@ The code delivers equivalent results with the programme certification values
 published in Table A of Janiczek and DeYoung (1987), as such all original 
 limitations remain (see below).
 
+## How to cite this package in your article
+
+> Koen Hufkens. (2022). bluegreen-labs/skylight: skylight: A Simple Sky Illuminance Model. Zenodo. <https://doi.org/10.5281/zenodo.7222045>, in addition reference the original work by Janiczek and DeYoung (1987, see below)
+
 ## Limitations
 
 The sky illuminance model by Janiczek and DeYoung (1987) in `skylight` has some limitations:
@@ -40,10 +44,6 @@ be executed before processing. No warnings are provided.
 
 Yet, overall the model should provide a fast approximation where more computationally expensive models would only provide marginal benefits for most applications. 
 For a full description of the model I refer to Janiczek and DeYoung (1987).
-
-## How to cite this package in your article
-
-> Koen Hufkens. (2022). bluegreen-labs/skylight: skylight: A Simple Sky Illuminance Model. Zenodo. <https://doi.org/10.5281/zenodo.7222045>, in addition reference the original work by Janiczek and DeYoung (1987, see below)
 
 ## Installation
 
