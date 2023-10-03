@@ -102,6 +102,13 @@
 <p>Very few adjustments to the original code where made to ensure equivalency in results. As such, most of the naming of the subroutines and variables was retained. However, some changes were made to the main routine and subroutines to ensure vectorization of the code to speed up batch processing of data.</p>
 <p>With time more detailed information will be added to all functions, including references to subroutine functions and more transparent variable names, while limiting variable recycling (a common practice in the original code base). The code delivers equivalent results with the programme certification values published in Table A of Janiczek and DeYoung (1987), as such all original limitations remain (see below).</p>
 <div class="section level2">
+<h2 id="how-to-cite-this-package-in-your-article">How to cite this package in your article<a class="anchor" aria-label="anchor" href="#how-to-cite-this-package-in-your-article"></a>
+</h2>
+<blockquote>
+<p>Koen Hufkens. (2022). bluegreen-labs/skylight: skylight: A Simple Sky Illuminance Model. Zenodo. <a href="https://doi.org/10.5281/zenodo.7222045" class="external-link uri">https://doi.org/10.5281/zenodo.7222045</a>, in addition reference the original work by Janiczek and DeYoung (1987, see below)</p>
+</blockquote>
+</div>
+<div class="section level2">
 <h2 id="limitations">Limitations<a class="anchor" aria-label="anchor" href="#limitations"></a>
 </h2>
 <p>The sky illuminance model by Janiczek and DeYoung (1987) in <code>skylight</code> has some limitations:</p>
@@ -112,13 +119,6 @@
 <li>Strong coherence and proper time keeping is required, there is a strong requirement to provide dates in GMT, corrections based upon latitude (not civil time zone) should be executed before processing. No warnings are provided.</li>
 </ul>
 <p>Yet, overall the model should provide a fast approximation where more computationally expensive models would only provide marginal benefits for most applications. For a full description of the model I refer to Janiczek and DeYoung (1987).</p>
-</div>
-<div class="section level2">
-<h2 id="how-to-cite-this-package-in-your-article">How to cite this package in your article<a class="anchor" aria-label="anchor" href="#how-to-cite-this-package-in-your-article"></a>
-</h2>
-<blockquote>
-<p>Koen Hufkens. (2022). bluegreen-labs/skylight: skylight: A Simple Sky Illuminance Model. Zenodo. <a href="https://doi.org/10.5281/zenodo.7222045" class="external-link uri">https://doi.org/10.5281/zenodo.7222045</a>, in addition reference the original work by Janiczek and DeYoung (1987, see below)</p>
-</blockquote>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
