@@ -1,13 +1,16 @@
 citHeader("To cite skylight in publications use:")
 
-citEntry(entry = "Misc",
-         title = "skylight: A Simple Sky Illuminance Model in R",
-         author = personList(as.person("Koen Hufkens")),
-         year = "2022",
-         doi = "10.5281/zenodo.7222045",
-         url = "https://bluegreen-labs.github.io/skylight/",
-         textVersion  =
-           paste("Hufkens K. (2022).",
-                 "skylight: A Simple Sky Illuminance Model in R",
-                 "https://doi.org/10.5281/zenodo.7222045")
-         )
+bibentry(bibtype = "article",
+  author = "Hufkens, Koen  and Meier, Christoph M.  and Evens, Ruben  and Paredes, Josefa Arán  and Karaardiç, Hakan  and Vercauteren, Stef  and Van Gysel, Ann  and Fox, James W.  and Pacheco, Carlos Miguel  and da Silva, Luis P.  and Fernandes, Sandra  and Henriques, Pedro  and Elias, Gonçalo  and Costa, Luís T.  and Poot, Martin  and Kearsley, Lyndon",
+title = "Evaluating the effects of moonlight on the vertical flight profiles of three western palaearctic swifts",
+journal = "Proceedings of the Royal Society B: Biological Sciences",
+volume = "290",
+number = "2010",
+pages = "20230957",
+year = "2023",
+doi = "10.1098/rspb.2023.0957",
+URL = "https://royalsocietypublishing.org/doi/abs/10.1098/rspb.2023.0957",
+eprint = "https://royalsocietypublishing.org/doi/pdf/10.1098/rspb.2023.0957"
+,
+    abstract = " Recent studies have suggested the presence of moonlight mediated behaviour in avian aerial insectivores, such as swifts. Here, we use the combined analysis of state-of-the-art activity logger data across three swift species, the common, pallid and alpine swifts, to quantify flight height and activity in responses to moonlight-driven crepuscular and nocturnal light conditions. Our results show a significant response in flight heights to moonlight illuminance for common and pallid swifts, i.e. when moon illuminance increased flight height also increased, while a moonlight-driven response is absent in alpine swifts. We show a weak relationship between night-time illuminance-driven responses and twilight ascending behaviour, suggesting a decoupling of both crepuscular and night-time behaviour. We suggest that swifts optimize their flight behaviour to adapt to favourable night-time light conditions, driven by light-responsive and size-dependent vertical insect stratification and weather conditions. "
+)
