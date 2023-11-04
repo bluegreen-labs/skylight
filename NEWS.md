@@ -1,3 +1,8 @@
+# skylight 1.2
+
+* updating reference (post manuscript publication)
+* adding required UTF-8 encoding (special characters in citation)
+
 # skylight 1.1
 
 * CRAN review 2 - fixed description
