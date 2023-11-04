@@ -1,6 +1,6 @@
 Dear CRAN team,
 
-This is a small correction of the citation file in the package, after the publication of the associated paper. No further changes were made, and statistics remain unchanged with respect to previous releases.
+This is a small correction of the citation file in the package, after the publication of the associated paper. No further changes were made, and package test statistics remain unchanged with respect to previous releases.
 
 Kind regards,
 Koen Hufkens
