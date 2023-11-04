@@ -62,8 +62,8 @@ To install the development releases of the package run the following
 commands:
 
 ``` r
-if(!require(devtools)){install.packages("devtools")}
-devtools::install_github("bluegreen-labs/skylight")
+if(!require(remotes)){install.packages("remotes")}
+remotes::install_github("bluegreen-labs/skylight")
 library("skylight")
 ```
 
@@ -71,8 +71,8 @@ Vignettes are not rendered by default, if you want to include additional
 documentation please use:
 
 ``` r
-if(!require(devtools)){install.packages("devtools")}
-devtools::install_github("bluegreen-labs/skylight", build_vignettes = TRUE)
+if(!require(remotes)){install.packages("remotes")}
+remotes::install_github("bluegreen-labs/skylight", build_vignettes = TRUE)
 library("skylight")
 ```
 
@@ -126,7 +126,7 @@ input <- cbind(input, df)
 
 Plotting this data results in 
 
-![](https://bluegreen-labs.github.io/skylight/articles/skylight_files/figure-html/unnamed-chunk-3-1.png)
+![](https://bluegreen-labs.github.io/skylight/articles/skylight_files/figure-html/unnamed-chunk-4-1.png)
 
 ### Piped data workflow
 
