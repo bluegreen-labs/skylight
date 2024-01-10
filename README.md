@@ -1,6 +1,6 @@
 # Skylight <a href='https://github.com/bluegreen-labs/skylight'><img src='logo.png' align="right" height="139" /></a>
 
-[![R-CMD-check](https://github.com/bluegreen-labs/skylight/workflows/R-CMD-check/badge.svg)](https://github.com/bluegreen-labs/skylight/actions)
+[![R-CMD-check](https://github.com/bluegreen-labs/skylight/actions/workflows/check-package.yaml/badge.svg)](https://github.com/bluegreen-labs/skylight/actions/workflows/check-package.yaml)
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/skylight)](https://cran.r-project.org/package=skylight)
 [![](https://cranlogs.r-pkg.org/badges/skylight)](https://cran.r-project.org/package=skylight)
 [![codecov](https://codecov.io/gh/bluegreen-labs/skylight/branch/main/graph/badge.svg?token=66IIX0HL7K)](https://app.codecov.io/gh/bluegreen-labs/skylight)
