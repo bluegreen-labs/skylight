@@ -27,7 +27,7 @@ published in Table A of Janiczek and DeYoung (1987), as such all original
 limitations remain (see below).
 
 ## How to cite this package in your article
-
+> [!important]
 > Hufkens, K. et al. (2023) ‘Evaluating the effects of moonlight on the vertical flight profiles of three western palaearctic swifts’. Royal Society Proceedings B. doi: 10.1098/rspb.2023.0957, in addition reference the original work by Janiczek and DeYoung (1987, see below)
 
 ## Limitations
