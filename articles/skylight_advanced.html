@@ -96,7 +96,7 @@
                         <h4 data-toc-skip class="author">Koen
 Hufkens</h4>
             
-            <h4 data-toc-skip class="date">2024-01-31</h4>
+            <h4 data-toc-skip class="date">2024-02-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/bluegreen-labs/skylight/blob/HEAD/vignettes/skylight_advanced.Rmd" class="external-link"><code>vignettes/skylight_advanced.Rmd</code></a></small>
       <div class="hidden name"><code>skylight_advanced.Rmd</code></div>
@@ -151,12 +151,12 @@ most of Europe.</p>
 above downloaded data is included as a demo data set in the package. You
 can therefore use this included data in this workflow. Check out the
 <code>ecmwfr</code> package to download your own custom data.</p>
-<pre><code><span><span class="co">#&gt; terra 1.7.65</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; terra 1.7.71</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># read in data</span></span>
-<span><span class="va">era5</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"skylight"</span>, <span class="st">"extdata/era5.nc"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">era5</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"skylight"</span>, <span class="st">"extdata/era5.nc"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># use this command when downloading the data yourself</span></span>
 <span><span class="co"># era5 &lt;- terra:rast(file.path(tempdir(),"era5.nc"))</span></span></code></pre></div>
@@ -178,16 +178,16 @@ use with the <code>skylight</code> package.</p>
 <span></span>
 <span><span class="co"># create a data frame with values</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">era5</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span>xy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span>xy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span></span>
 <span>    longitude <span class="op">=</span> <span class="st">"x"</span>,</span>
 <span>    latitude <span class="op">=</span> <span class="st">"y"</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># add the original time stamp</span></span>
-<span><span class="va">df</span><span class="op">$</span><span class="va">date</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/time.html" class="external-link">time</a></span><span class="op">(</span><span class="va">era5</span><span class="op">)</span></span>
+<span><span class="va">df</span><span class="op">$</span><span class="va">date</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/time.html" class="external-link">time</a></span><span class="op">(</span><span class="va">era5</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   longitude latitude       tcc                date</span></span>
 <span><span class="co">#&gt; 1    -20.00       70 0.9886775 2021-02-01 17:00:00</span></span>
 <span><span class="co">#&gt; 2    -19.75       70 0.9975280 2021-02-01 17:00:00</span></span>
@@ -215,7 +215,7 @@ use with the <code>skylight</code> package.</p>
 <span><span class="co"># pipe into skylight</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/skylight.html">skylight</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   longitude latitude       tcc                date sky_condition sun_azimuth</span></span>
 <span><span class="co">#&gt; 1    -20.00       70 0.9886775 2021-02-01 17:00:00      9.898097         229</span></span>
 <span><span class="co">#&gt; 2    -19.75       70 0.9975280 2021-02-01 17:00:00      9.977752         229</span></span>
