@@ -5,42 +5,29 @@
 #include <R_ext/Rdynload.h>
 
 void F77_NAME(skylight_f)(
-    double *longitude,
-    double *latitude,
-    double *altitude,
-    double *whc,
-    double *par,
-    double *forcing,
+    double *input,
     double *output
     );
 
 // C wrapper function, order of arguments is fixed
 extern SEXP skylight_C(
-    SEXP longitude,
-    SEXP latitude,
-    SEXP altitude,
-    SEXP n
+    SEXP input,
+    SEXP output
+    //SEXP n
     ){
-
-    // Number of time steps (same in forcing and output)
-    const int nt = INTEGER(n)[0] ;
 
     // Specify output
     // 2nd argument to allocMatrix is number of rows,
     // 3rd is number of columns
-    SEXP output = PROTECT( allocMatrix(REALSXP, nt, 19) );
+    //SEXP output = PROTECT( allocMatrix(REALSXP, nt, 19) );
 
     // Fortran subroutine call
-    F77_CALL(pmodel_f)(
-        REAL(longitude),
-        REAL(latitude),
-        REAL(altitude),
-        INTEGER(n),
+    F77_CALL(skylight_f)(
+        REAL(input),
         REAL(output)
         );
 
     UNPROTECT(1);
-
     return output;
 };
 

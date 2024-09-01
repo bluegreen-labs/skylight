@@ -15,23 +15,24 @@ module subroutines
     real, intent(out) :: T, G, LS, AS, SD, DS
 
     real :: T_temp
+    real :: Y
 
     T = 280.46 + 0.98565 * D
     T_temp = T / 360.0
     T = T - int(T_temp) * 360.0
 
-    where (T < 0.0)
-      T = T + 360.0
-    end where
+    !where (T < 0.0)
+    !  T = T + 360.0
+    !end where
 
     G = (357.5 + 0.98560 * D) * DR
     LS = (T + 1.91 * sin(G)) * DR
     AS = atan(CE * tan(LS)) * RD
     Y = cos(LS)
 
-    where (Y < 0.0)
-      AS = AS + 180.0
-    end where
+    !where (Y < 0.0)
+    !  AS = AS + 180.0
+    !end where
 
     SD = SE * sin(LS)
     DS = asin(SD)
@@ -52,14 +53,15 @@ module subroutines
     real, intent(out) :: V, SD, AS, DS, CB
 
     real :: V_temp
+    real :: Y, X, W, CD, O, P, Q, S, SB, SV
 
     V = 218.32 + 13.1764 * D
     V_temp = V / 360.0
     V = V - int(V_temp) * 360.0
 
-    where (V < 0.0)
-      V = V + 360.0
-    end where
+    !where (V < 0.0)
+    !  V = V + 360.0
+    !end where
 
     Y = (134.96 + 13.06499 * D) * DR
     O = (93.27 + 13.22935 * D) * DR
@@ -83,9 +85,9 @@ module subroutines
     DS = asin(SD)
     AS = atan(P/Q) * RD
 
-    where (Q < 0.0)
-      AS = AS + 180.0
-    end where
+    !where (Q < 0.0)
+    !  AS = AS + 180.0
+    !end where
 
   end subroutine moon
 
@@ -110,13 +112,13 @@ module subroutines
     P = -CD * sin(H * DR)
     AZ_out = atan(P/Q) * RD
 
-    where (Q < 0.0)
-      AZ_out = AZ_out + 180.0
-    end where
+    !where (Q < 0.0)
+    !  AZ_out = AZ_out + 180.0
+    !end where
 
-    where (AZ_out < 0.0)
-      AZ_out = AZ_out + 360.0
-    end where
+    !where (AZ_out < 0.0)
+    !  AZ_out = AZ_out + 360.0
+    !end where
 
     AZ_out = int(AZ_out + 0.5)
     H_out = asin(SD * SI + CD * CI * CS) * RD
@@ -135,11 +137,11 @@ module subroutines
     real, intent(in) :: H, DR
     real, intent(out) :: HA
 
-    where (H < -5.0 / 6.0)
-      HA = H
-    else
-      HA = H + 1.0 / tan((H + 8.6 / (H + 4.42)) * DR) / 60.0
-    end where
+    !where (H < -5.0 / 6.0)
+    !  HA = H
+    !elsewhere
+    !  HA = H + 1.0 / tan((H + 8.6 / (H + 4.42)) * DR) / 60.0
+    !end where
 
   end subroutine refr
 
@@ -166,4 +168,4 @@ module subroutines
           (1.0 + (HA + 90.0) * U / 57.29577951)
 
   end subroutine atmos
-end module subroutine
+end module subroutines

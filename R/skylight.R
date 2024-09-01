@@ -115,131 +115,148 @@ skylight <- function(
   hour <- as.numeric(format(date,"%H"))
   minutes <- as.numeric(format(date, "%M"))
 
-  # calculate hours as a decimal number
-  hour_dec <- hour + minutes/60
+  if (fast) {
+    # C wrapper call
+    output <- .Call(
+      'skylight_f_C',
+      n = n,
+      forcing = data.frame(
+        .data,
+        year = year,
+        month = month,
+        day = day,
+        hour = hour,
+        minutes = minutes
+        )
+    )
+  } else {
 
-  # constant values
-  RD <- 57.29577951
-  DR <- 1 / RD
-  CE <- 0.91775
-  SE <- 0.39715
+    # calculate hours as a decimal number
+    hour_dec <- hour + minutes/60
 
-  # convert latitude
-  latitude <-  latitude * DR
+    # constant values
+    RD <- 57.29577951
+    DR <- 1 / RD
+    CE <- 0.91775
+    SE <- 0.39715
 
-  J <- 367 * year -
-    as.integer(7 * (year + as.integer((month + 9)/12))/4) +
-    as.integer(275 * month/9) +
-    day - 730531
+    # convert latitude
+    latitude <-  latitude * DR
 
-  E <- hour_dec/24
-  D <- J - 0.5 + E
+    J <- 367 * year -
+      as.integer(7 * (year + as.integer((month + 9)/12))/4) +
+      as.integer(275 * month/9) +
+      day - 730531
 
-  #---- calculate solar parameters ----
-  solar_parameters <- sun(
-    D,
-    DR,
-    RD,
-    CE,
-    SE
-  )
+    E <- hour_dec/24
+    D <- J - 0.5 + E
 
-  # in place adjustments
-  solar_parameters$T <- solar_parameters$T + 360 * E + longitude
-  solar_parameters$H <- solar_parameters$T - solar_parameters$AS
-
-  # calculate celestial body
-  # parameters all these subroutines
-  # need proper clarifications as
-  # not provided in the original work
-  # and taken as is
-  altaz_parameters <- altaz(
-    solar_parameters$DS,
-    solar_parameters$H,
-    solar_parameters$SD,
-    cos(latitude),
-    sin(latitude),
-    DR,
-    RD
-  )
-
-  H <- altaz_parameters$H
-  Z <- altaz_parameters$H * DR
-  solar_azimuth <- altaz_parameters$AZ
-
-  # solar altitude calculation
-  solar_altitude <- refr(
-    altaz_parameters$H,
-    DR
+    #---- calculate solar parameters ----
+    solar_parameters <- sun(
+      D,
+      DR,
+      RD,
+      CE,
+      SE
     )
 
-  # atmospheric calculations
-  # look up references
-  M <- atmos(
-    solar_altitude,
-    DR
-  )
+    # in place adjustments
+    solar_parameters$T <- solar_parameters$T + 360 * E + longitude
+    solar_parameters$H <- solar_parameters$T - solar_parameters$AS
 
-  # Solar illuminance in lux, scaled using the value
-  # provided by sky_condition. The default does not
-  # scale the value, all other values > 1 scale the
-  # illuminance values
-  solar_illuminance <- 133775 * M / sky_condition
+    # calculate celestial body
+    # parameters all these subroutines
+    # need proper clarifications as
+    # not provided in the original work
+    # and taken as is
+    altaz_parameters <- altaz(
+      solar_parameters$DS,
+      solar_parameters$H,
+      solar_parameters$SD,
+      cos(latitude),
+      sin(latitude),
+      DR,
+      RD
+    )
 
-  #---- calculate lunar parameters ----
-  lunar_parameters <- moon(
-    D,
-    solar_parameters$G,
-    CE,
-    SE,
-    RD,
-    DR
-  )
+    H <- altaz_parameters$H
+    Z <- altaz_parameters$H * DR
+    solar_azimuth <- altaz_parameters$AZ
 
-  lunar_parameters$H <- solar_parameters$T - lunar_parameters$AS
+    # solar altitude calculation
+    solar_altitude <- refr(
+      altaz_parameters$H,
+      DR
+      )
 
-  altaz_parameters <- altaz(
-    lunar_parameters$DS,
-    lunar_parameters$H,
-    lunar_parameters$SD,
-    cos(latitude),
-    sin(latitude),
-    DR,
-    RD
-  )
+    # atmospheric calculations
+    # look up references
+    M <- atmos(
+      solar_altitude,
+      DR
+    )
 
-  # corrections?
-  Z <- altaz_parameters$H * DR
-  H <- altaz_parameters$H - 0.95 * cos(altaz_parameters$H * DR)
+    # Solar illuminance in lux, scaled using the value
+    # provided by sky_condition. The default does not
+    # scale the value, all other values > 1 scale the
+    # illuminance values
+    solar_illuminance <- 133775 * M / sky_condition
 
-  # calculate lunar altitude
-  lunar_altitude <- refr(H, DR)
+    #---- calculate lunar parameters ----
+    lunar_parameters <- moon(
+      D,
+      solar_parameters$G,
+      CE,
+      SE,
+      RD,
+      DR
+    )
 
-  # atmospheric conditions?
-  M <- atmos(lunar_altitude, DR)
+    lunar_parameters$H <- solar_parameters$T - lunar_parameters$AS
 
-  E <- acos(cos(lunar_parameters$V - solar_parameters$LS) * lunar_parameters$CB)
-  P <- 0.892 * exp(-3.343/((tan(E/2.0))^0.632)) + 0.0344 * (sin(E) - E * cos(E))
-  P <- 0.418 * P/(1 - 0.005 * cos(E) - 0.03 * sin(Z))
+    altaz_parameters <- altaz(
+      lunar_parameters$DS,
+      lunar_parameters$H,
+      lunar_parameters$SD,
+      cos(latitude),
+      sin(latitude),
+      DR,
+      RD
+    )
 
-  # Lunar illuminance in lux, scaled using the value
-  # provided by sky_condition. The default does not
-  # scale the value, all other values > 1 scale the
-  # illuminance values
-  lunar_illuminance <- P * M / sky_condition
+    # corrections?
+    Z <- altaz_parameters$H * DR
+    H <- altaz_parameters$H - 0.95 * cos(altaz_parameters$H * DR)
 
-  # Lunar azimuth/altitude in degrees
-  # again forced to integers seems
-  # check if this requirement can be dropped
-  lunar_azimuth <- altaz_parameters$AZ
+    # calculate lunar altitude
+    lunar_altitude <- refr(H, DR)
 
-  # The percentage of the moon illuminated
-  lunar_fraction <- 50 * (1 - cos(E))
+    # atmospheric conditions?
+    M <- atmos(lunar_altitude, DR)
 
-  # Total sky illuminance, this value is of importance when
-  # considering dusk/dawn conditions mostly, i.e. during hand-off
-  # between solar and lunar illumination conditions
-  total_illuminance <- solar_illuminance + lunar_illuminance + 0.0005 / sky_condition
+    E <- acos(cos(lunar_parameters$V - solar_parameters$LS) * lunar_parameters$CB)
+    P <- 0.892 * exp(-3.343/((tan(E/2.0))^0.632)) + 0.0344 * (sin(E) - E * cos(E))
+    P <- 0.418 * P/(1 - 0.005 * cos(E) - 0.03 * sin(Z))
+
+    # Lunar illuminance in lux, scaled using the value
+    # provided by sky_condition. The default does not
+    # scale the value, all other values > 1 scale the
+    # illuminance values
+    lunar_illuminance <- P * M / sky_condition
+
+    # Lunar azimuth/altitude in degrees
+    # again forced to integers seems
+    # check if this requirement can be dropped
+    lunar_azimuth <- altaz_parameters$AZ
+
+    # The percentage of the moon illuminated
+    lunar_fraction <- 50 * (1 - cos(E))
+
+    # Total sky illuminance, this value is of importance when
+    # considering dusk/dawn conditions mostly, i.e. during hand-off
+    # between solar and lunar illumination conditions
+    total_illuminance <- solar_illuminance + lunar_illuminance + 0.0005 / sky_condition
+  }
 
   # format output data frame
   output <- data.frame(
