@@ -2,11 +2,11 @@ module subroutines
 
 contains
 
-# see SUN subroutine on p.21 of
-# Computer Programs for Sun and Moon Illuminance
-# With Contingent Tables and Diagrams of
-# Janiczek and DeYoung, US Naval observatory circular
-# nr. 171, 1987
+! see SUN subroutine on p.21 of
+! Computer Programs for Sun and Moon Illuminance
+! With Contingent Tables and Diagrams of
+! Janiczek and DeYoung, US Naval observatory circular
+! nr. 171, 1987
 
 subroutine sun(D, DR, RD, CE, SE, T, G, LS, AS, SD, DS)
   implicit none
@@ -39,11 +39,11 @@ subroutine sun(D, DR, RD, CE, SE, T, G, LS, AS, SD, DS)
 
 end subroutine sun
 
-# see MOON subroutine on p.21 of
-# Computer Programs for Sun and Moon Illuminance
-# With Contingent Tables and Diagrams of
-# Janiczek and DeYoung, US Naval observatory circular
-# nr. 171, 1987
+! see MOON subroutine on p.21 of
+! Computer Programs for Sun and Moon Illuminance
+! With Contingent Tables and Diagrams of
+! Janiczek and DeYoung, US Naval observatory circular
+! nr. 171, 1987
 
 subroutine moon(D, G, CE, SE, RD, DR, V, SD, AS, DS, CB)
   implicit none
@@ -90,11 +90,11 @@ subroutine moon(D, G, CE, SE, RD, DR, V, SD, AS, DS, CB)
 end subroutine moon
 
 
-# see ALTAZ subroutine on p.22 of
-# Computer Programs for Sun and Moon Illuminance
-# With Contingent Tables and Diagrams of
-# Janiczek and DeYoung, US Naval observatory circular
-# nr. 171, 1987
+! see ALTAZ subroutine on p.22 of
+! Computer Programs for Sun and Moon Illuminance
+! With Contingent Tables and Diagrams of
+! Janiczek and DeYoung, US Naval observatory circular
+! nr. 171, 1987
 
 subroutine altaz(DS, H, SD, CI, SI, DR, RD, H_out, AZ_out)
   implicit none
@@ -123,11 +123,11 @@ subroutine altaz(DS, H, SD, CI, SI, DR, RD, H_out, AZ_out)
 
 end subroutine altaz
 
-# see REFR subroutine on p.22 of
-# Computer Programs for Sun and Moon Illuminance
-# With Contingent Tables and Diagrams of
-# Janiczek and DeYoung, US Naval observatory circular
-# nr. 171, 1987
+! see REFR subroutine on p.22 of
+! Computer Programs for Sun and Moon Illuminance
+! With Contingent Tables and Diagrams of
+! Janiczek and DeYoung, US Naval observatory circular
+! nr. 171, 1987
 
 subroutine refr(H, DR, HA)
   implicit none
@@ -143,11 +143,11 @@ subroutine refr(H, DR, HA)
 
 end subroutine refr
 
-# see ATMOS subroutine on p.22 of
-# Computer Programs for Sun and Moon Illuminance
-# With Contingent Tables and Diagrams of
-# Janiczek and DeYoung, US Naval observatory circular
-# nr. 171, 1987
+! see ATMOS subroutine on p.22 of
+! Computer Programs for Sun and Moon Illuminance
+! With Contingent Tables and Diagrams of
+! Janiczek and DeYoung, US Naval observatory circular
+! nr. 171, 1987
 
 
 subroutine atmos(HA, DR, M)
