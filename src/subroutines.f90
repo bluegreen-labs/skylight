@@ -1,5 +1,8 @@
 module subroutines
 
+  ! basically no implicit assingments, need to make them
+  ! using array size (n) per subroutine or can I use (:)?
+
   contains
 
   ! see SUN subroutine on p.21 of
@@ -8,31 +11,33 @@ module subroutines
   ! Janiczek and DeYoung, US Naval observatory circular
   ! nr. 171, 1987
 
-  subroutine sun(D, DR, RD, CE, SE, T, G, LS, AS, SD, DS)
-    implicit none
+  subroutine sun(&
+    D, DR, RD, CE, SE, &
+    T, G, LS, AS, SD, DS &
+    )
 
-    real, intent(in) :: D, DR, RD, CE, SE
-    real, intent(out) :: T, G, LS, AS, SD, DS
-
-    real :: T_temp
-    real :: Y
+    !implicit none
+    real, intent(in) :: D(:)
+    real, intent(in) :: DR, RD, CE, SE
+    real, intent(out), dimension(size(D,1)) :: T, G, LS, AS, SD, DS
+    real, dimension(size(D,1)) :: Y
 
     T = 280.46 + 0.98565 * D
-    T_temp = T / 360.0
-    T = T - int(T_temp) * 360.0
+    T = T / 360.0
+    T = T - int(T) * 360.0
 
-    !where (T < 0.0)
-    !  T = T + 360.0
-    !end where
+    where (T < 0.0)
+      T = T + 360.0
+    end where
 
     G = (357.5 + 0.98560 * D) * DR
     LS = (T + 1.91 * sin(G)) * DR
     AS = atan(CE * tan(LS)) * RD
     Y = cos(LS)
 
-    !where (Y < 0.0)
-    !  AS = AS + 180.0
-    !end where
+    where (Y < 0.0)
+      AS = AS + 180.0
+    end where
 
     SD = SE * sin(LS)
     DS = asin(SD)
@@ -46,22 +51,24 @@ module subroutines
   ! Janiczek and DeYoung, US Naval observatory circular
   ! nr. 171, 1987
 
-  subroutine moon(D, G, CE, SE, RD, DR, V, SD, AS, DS, CB)
+  subroutine moon( &
+    D, G, CE, SE, RD, DR, &
+    V, SD, AS, DS, CB &
+    )
+
     implicit none
-
-    real, intent(in) :: D, G, CE, SE, RD, DR
-    real, intent(out) :: V, SD, AS, DS, CB
-
-    real :: V_temp
-    real :: Y, X, W, CD, O, P, Q, S, SB, SV
+    real, intent(in) :: D(:), G(:)
+    real, intent(in) :: CE, SE, RD, DR
+    real, intent(out), dimension(size(D,1)) :: V, SD, AS, DS, CB
+    real, dimension(size(D,1)) :: Y, X, W, CD, O, P, Q, S, SB, SV
 
     V = 218.32 + 13.1764 * D
-    V_temp = V / 360.0
-    V = V - int(V_temp) * 360.0
+    V = V / 360.0
+    V = V - int(V) * 360.0
 
-    !where (V < 0.0)
-    !  V = V + 360.0
-    !end where
+    where (V < 0.0)
+      V = V + 360.0
+    end where
 
     Y = (134.96 + 13.06499 * D) * DR
     O = (93.27 + 13.22935 * D) * DR
@@ -85,12 +92,11 @@ module subroutines
     DS = asin(SD)
     AS = atan(P/Q) * RD
 
-    !where (Q < 0.0)
-    !  AS = AS + 180.0
-    !end where
+    where (Q < 0.0)
+      AS = AS + 180.0
+    end where
 
   end subroutine moon
-
 
   ! see ALTAZ subroutine on p.22 of
   ! Computer Programs for Sun and Moon Illuminance
@@ -98,30 +104,36 @@ module subroutines
   ! Janiczek and DeYoung, US Naval observatory circular
   ! nr. 171, 1987
 
-  subroutine altaz(DS, H, SD, CI, SI, DR, RD, H_out, AZ_out)
+  subroutine altaz( &
+    DS, H, SD, CI, SI, DR, RD, AZ &
+    )
+
     implicit none
 
-    real, intent(in) :: DS, H, SD, CI, SI, DR, RD
-    real, intent(out) :: H_out, AZ_out
+    real, intent(inout) :: H(:)
+    real, intent(in) :: DS, SD, CI, SI
+    real, intent(in) :: DR, RD
+    real, intent(out), dimension(size(H, 1)) :: AZ
+    real, dimension(size(H, 1)) :: CS, Q, P
 
-    real :: CD, CS, Q, P
+    real :: CD
 
     CD = cos(DS)
     CS = cos(H * DR)
     Q = SD * CI - CD * SI * CS
     P = -CD * sin(H * DR)
-    AZ_out = atan(P/Q) * RD
+    AZ = atan(P/Q) * RD
 
-    !where (Q < 0.0)
-    !  AZ_out = AZ_out + 180.0
-    !end where
+    where (Q < 0.0)
+      AZ = AZ + 180.0
+    end where
 
-    !where (AZ_out < 0.0)
-    !  AZ_out = AZ_out + 360.0
-    !end where
+    where (AZ < 0.0)
+      AZ = AZ + 360.0
+    end where
 
-    AZ_out = int(AZ_out + 0.5)
-    H_out = asin(SD * SI + CD * CI * CS) * RD
+    AZ = int(AZ + 0.5)
+    H = asin(SD * SI + CD * CI * CS) * RD
 
   end subroutine altaz
 
@@ -134,14 +146,15 @@ module subroutines
   subroutine refr(H, DR, HA)
     implicit none
 
-    real, intent(in) :: H, DR
-    real, intent(out) :: HA
+    real, intent(in) :: H(:)
+    real, intent(in) :: DR
+    real, intent(out), dimension(size(H,1)) :: HA
 
-    !where (H < -5.0 / 6.0)
-    !  HA = H
-    !elsewhere
-    !  HA = H + 1.0 / tan((H + 8.6 / (H + 4.42)) * DR) / 60.0
-    !end where
+    where (H < -5.0 / 6.0)
+      HA = H
+    elsewhere
+      HA = H + 1.0 / tan((H + 8.6 / (H + 4.42)) * DR) / 60.0
+    end where
 
   end subroutine refr
 
@@ -155,10 +168,15 @@ module subroutines
   subroutine atmos(HA, DR, M)
     implicit none
 
-    real, intent(in) :: HA, DR
-    real, intent(out) :: M
+    real, intent(in) :: HA(:)
+    real, intent(in) :: DR
+    real, intent(out), dimension(size(HA, 1)) :: M
 
-    real :: U, X, S
+    ! internal variables
+    real, dimension(size(HA, 1)) :: U, S
+
+    ! constant
+    real :: X
 
     U = sin(HA * DR)
     X = 753.66156

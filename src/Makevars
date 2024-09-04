@@ -15,8 +15,8 @@ skylight.o: subroutines.o subroutines.mod
 
 # Source (object) of Fortran modules
 # <modulename.mod>: <filename.o>
-subroutines.mod: subroutines.o
 skylight_r_mod.mod: skylight.o
+subroutines.mod: subroutines.o
 
 # Dependency of the C wrapper
 wrappersc.o: skylight_r_mod.mod

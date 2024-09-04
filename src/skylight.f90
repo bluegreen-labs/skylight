@@ -1,60 +1,35 @@
 module skylight_r_mod
+  use, intrinsic :: iso_c_binding
 
-  use, intrinsic :: iso_c_binding, only: c_double, c_int, c_char, c_bool
   implicit none
 
   private
   public :: skylight_f
 
-  ! set input output data types
-  type skylight_forcing
-    real(kind=sp) :: longitude
-    real(kind=sp) :: latitude
-    real(kind=sp) :: date
-    real(kind=sp) :: year
-    real(kind=sp) :: month
-    real(kind=sp) :: day
-    real(kind=sp) :: hour
-    real(kind=sp) :: minutes
-    real(kind=sp) :: sky_conditions
-  end type skylight_forcing
-
-  type skylight_output
-    real(kind=sp) :: solar_azimuth
-    real(kind=sp) :: solar_altitude
-    real(kind=sp) :: solar_illuminance
-    real(kind=sp) :: lunar_azimuth
-    real(kind=sp) :: lunar_altitude
-    real(kind=sp) :: lunar_illuminance
-    real(kind=sp) :: lunar_fraction
-    real(kind=sp) :: total_illuminance
-  end type skylight_output
+contains
 
   subroutine skylight_f( &
     forcing, &
+    n, &
     output &
     ) bind(C, name = "skylight_f_")
 
     use subroutines
+    implicit none
 
-    integer :: n
-    real(kind=dp),  dimension(n, 9), intent(in)  :: forcing
-    type(skylight_forcing), dimension(n, 9) :: input
-    type(skylight_output), dimension(n, 8), intent(out) :: output
+    integer(kind = c_int), intent(in)  :: n
+    real(kind = c_double), intent(in), dimension(n, 8) :: forcing
+    real(kind = c_double), intent(out), dimension(n, 8) :: output
 
-    ! warning: column indices in forcing array are hard coded
-    input(:)%longitude   = real(forcing(:, 1))
-    input(:)%latitude   = real(forcing(:, 2))
-    input(:)%date   = real(forcing(:, 3))
-    input(:)%year    = real(forcing(:, 4))
-    input(:)%month    = real(forcing(:, 5))
-    input(:)%day    = real(forcing(:, 6))
-    input(:)%hour    = real(forcing(:, 7))
-    input(:)%minutes    = real(forcing(:, 8))
-    input(:)%sky_conditions    = real(forcing(:, 9))
+    ! internal state variables (i.e. subroutine output)
+    real, dimension(n) :: T, G, LS, AS, SD, DS, V, &
+      CB, H, CI, SI, HA, D, E, J, hour_dec
 
-    integer :: year, month, day, hour, minutes
-    real :: hour_dec, RD, DR, CE, SE, latitude, J, E, solar_altitude, lunar_altitude, M, P, Z
+    real, dimension(n) :: longitude, latitude, year, month, day, &
+      hour, minutes, sky_conditions
+
+    ! assign constants
+    real :: RD, DR, CE, SE
 
     ! Constant values
     RD = 57.29577951
@@ -62,100 +37,50 @@ module skylight_r_mod
     CE = 0.91775
     SE = 0.39715
 
-    hour_dec = hour + minutes / 60.0
+    longitude = real(forcing(:, 1))
+    latitude = real(forcing(:, 2))
+    year = real(forcing(:, 3))
+    month = real(forcing(:, 4))
+    day = real(forcing(:, 5))
+    hour = real(forcing(:, 6))
+    minutes = real(forcing(:, 7))
+    sky_conditions = real(forcing(:, 8))
+
+    ! calculate decimal hours
+    hour_dec = (hour + minutes) / 60.0
 
     ! Convert latitude
-    latitude = input%latitude * DR
+    !latitude = latitude * DR
 
     ! Julian day calculation
-    J = 367 * int(input%year) - int(7 * (input%year + int((input%month + 9) / 12)) / 4) + &
-        int(275 * input%month / 9) + day - 730531
+    J = 367 * int(year) - int(7 * (year + int((month + 9) / 12)) / 4) + &
+        int(275 * month / 9) + int(day) - 730531
 
     E = hour_dec / 24.0
     D = J - 0.5 + E
 
-    ! Calculate solar parameters
-    call sun( &
-            D, &
-            DR, &
-            RD, &
-            CE, &
-            SE, &
-            output
-            )
+    !------------- SUN routines ------------------------
+
+    ! Calculate solar parameters returning second line values
+    call sun(D, DR, RD, CE, SE, T, G, LS, AS, SD, DS)
 
     ! In-place adjustments (UTTER LLM BULLSHIT, double ckeck everything)
-    output%sun_azimuth = output%sun_azimuth + 360 * E + output%longitude
-    output%sun_altitude = output%sun_azimuth - output%sun_illuminance
+    T = T + 360 * E + longitude
+    H = T - AS
 
-    ! Calculate celestial body parameters
-    call altaz( &
-          output%sun_altitude, &
-          output%sun_azimuth, &
-          output%sun_illuminance, &
-          cos(latitude), &
-          sin(latitude), &
-          DR, &
-          RD, &
-          Z, &
-          output%moon_azimuth &
-        )
 
-    ! Solar altitude calculation
-    call refr(output%sun_altitude, DR, output%sun_altitude)
+    !------------- MOON routines ------------------------
 
-    ! Atmospheric calculations
-    call atmos(output%sun_altitude, DR, M)
 
-    ! Solar illuminance
-    output%sun_illuminance = 133775 * M / input%sky_condition
 
-    ! Calculate lunar parameters
-    call moon( &
-          D, &
-          output%sun_azimuth, &
-          CE, &
-          SE, &
-          RD, &
-          DR, &
-          output%moon_azimuth, &
-          output%moon_altitude, &
-          output%moon_illuminance, &
-          output%moon_fraction &
-        )
 
-    ! Lunar altazimuth
-    call altaz( &
-          output%moon_altitude, &
-          output%moon_azimuth, &
-          output%moon_illuminance, &
-          cos(latitude), &
-          sin(latitude), &
-          DR, &
-          RD, &
-          Z, &
-          output%moon_azimuth &
-        )
-
-    ! Lunar altitude
-    call refr( &
-          output%moon_altitude, &
-          DR, &
-          output%moon_altitude &
-        )
-
-    ! Atmospheric conditions
-    call atmos( &
-          output%moon_altitude, &
-          DR, &
-          M &
-        )
-
-    ! Lunar illuminance
-    output%moon_illuminance = P * M / input%sky_condition
+    !------------- OUTPUT routines ------------------------
 
     ! Total illuminance
-    output%total_illuminance = output%sun_illuminance + output%moon_illuminance + 0.0005 / input%sky_condition
+    !total_illuminance = sun_illuminance + moon_illuminance + 0.0005 / sky_condition
+
+    ! assign T
+    output(:,1) = longitude
 
   end subroutine skylight_f
 

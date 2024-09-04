@@ -30,6 +30,7 @@
 #'  can be considered a scaling factor, substituting it with the (inverse)
 #'  slope parameter of an empirical fit should render more accurate results.
 #'  (this can be a single value or vector of values)
+#'  @param fast fast processing
 #'
 #' @return Sun and moon illuminance values (in lux), as well as their respective
 #' location in the sky (altitude, azimuth).
@@ -71,7 +72,8 @@ skylight <- function(
     longitude,
     latitude,
     date,
-    sky_condition = 1
+    sky_condition = 1,
+    fast = FALSE
     ){
 
   # pipe friendly function checks
@@ -116,19 +118,26 @@ skylight <- function(
   minutes <- as.numeric(format(date, "%M"))
 
   if (fast) {
-    # C wrapper call
-    output <- .Call(
-      'skylight_f_C',
-      n = n,
+
       forcing = data.frame(
-        .data,
+        longitude = longitude,
+        latitude = latitude,
         year = year,
         month = month,
         day = day,
         hour = hour,
-        minutes = minutes
-        )
+        minutes = minutes,
+        sky_condition = sky_condition
+      )
+
+    # C wrapper call
+    output <- .Call(
+      'c_skylight_f',
+      forcing = as.matrix(forcing),
+      n = as.integer(nrow(forcing))
     )
+
+    return(output)
   } else {
 
     # calculate hours as a decimal number

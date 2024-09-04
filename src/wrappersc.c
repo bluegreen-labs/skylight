@@ -6,40 +6,44 @@
 
 void F77_NAME(skylight_f)(
     double *input,
+    int *n,
     double *output
     );
 
 // C wrapper function, order of arguments is fixed
-extern SEXP skylight_C(
+extern SEXP c_skylight_f(
     SEXP input,
-    SEXP output
-    //SEXP n
+    SEXP n
     ){
+
+    // nr rows
+    const int nt = INTEGER(n)[0];
 
     // Specify output
     // 2nd argument to allocMatrix is number of rows,
     // 3rd is number of columns
-    //SEXP output = PROTECT( allocMatrix(REALSXP, nt, 19) );
+    SEXP output = PROTECT( allocMatrix(REALSXP, nt, 8));
 
     // Fortran subroutine call
     F77_CALL(skylight_f)(
         REAL(input),
+        INTEGER(n),
         REAL(output)
         );
 
     UNPROTECT(1);
-    return output;
+    return(output);
 };
 
 // Specify number of arguments to C wrapper as the last number here
 static const R_CallMethodDef CallEntries[] = {
-  {"skylight_C", (DL_FUNC) &skylight_C, 23},
+  {"c_skylight_f", (DL_FUNC) &c_skylight_f, 2},
   {NULL,NULL,0}
 };
 
-void R_init_rsofun(DllInfo *dll)
+void R_init_skylight(DllInfo *dll)
 {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
-    R_RegisterCCallable("skylight_C", "skylight_C",  (DL_FUNC) &skylight_C);
+    R_RegisterCCallable("skylight", "c_skylight_f",  (DL_FUNC) &c_skylight_f);
 }
