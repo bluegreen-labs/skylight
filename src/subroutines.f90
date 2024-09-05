@@ -23,8 +23,7 @@ module subroutines
     real, dimension(size(D,1)) :: Y
 
     T = 280.46 + 0.98565 * D
-    T = T / 360.0
-    T = T - int(T) * 360.0
+    T = T - (int(T/360.0) * 360.0)
 
     where (T < 0.0)
       T = T + 360.0
@@ -63,8 +62,7 @@ module subroutines
     real, dimension(size(D,1)) :: Y, X, W, CD, O, P, Q, S, SB, SV
 
     V = 218.32 + 13.1764 * D
-    V = V / 360.0
-    V = V - int(V) * 360.0
+    V = V - int(V / 360.0) * 360.0
 
     where (V < 0.0)
       V = V + 360.0
@@ -81,10 +79,13 @@ module subroutines
     CD = cos(W)
     V = (V + (6.29-1.27 * CD + 0.43 * CB) * SB + (0.66 + 1.27 * CB) * SD - &
             0.19 * sin(G) - 0.23 * X * S) * DR
+
     Y = ((5.13 - 0.17 * CD) * X + (0.56 * SB + 0.17 * SD) * S) * DR
+
     SV = sin(V)
     SB = sin(Y)
     CB = cos(Y)
+
     Q = CB * cos(V)
     P = CE * SV * CB - SE * SB
     SD = SE * SV * CB + CE * SB
@@ -111,16 +112,16 @@ module subroutines
     implicit none
 
     real, intent(inout) :: H(:)
-    real, intent(in) :: DS, SD, CI, SI
+    real, intent(in) :: DS(:), SD(:), CI(:), SI(:)
     real, intent(in) :: DR, RD
     real, intent(out), dimension(size(H, 1)) :: AZ
     real, dimension(size(H, 1)) :: CS, Q, P
 
-    real :: CD
+    real, dimension(size(DS,1)) :: CD
 
     CD = cos(DS)
     CS = cos(H * DR)
-    Q = SD * CI - CD * SI * CS
+    Q = (SD * CI) - (CD * SI * CS)
     P = -CD * sin(H * DR)
     AZ = atan(P/Q) * RD
 
@@ -133,7 +134,7 @@ module subroutines
     end where
 
     AZ = int(AZ + 0.5)
-    H = asin(SD * SI + CD * CI * CS) * RD
+    H = asin((SD * SI) + (CD * CI * CS)) * RD
 
   end subroutine altaz
 
