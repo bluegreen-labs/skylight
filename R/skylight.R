@@ -119,7 +119,7 @@ skylight <- function(
 
   if (fast) {
 
-      forcing = data.frame(
+    forcing = data.frame(
         longitude = longitude,
         latitude = latitude,
         year = year,
@@ -128,7 +128,7 @@ skylight <- function(
         hour = hour,
         minutes = minutes,
         sky_condition = sky_condition
-      )
+    )
 
     # C wrapper call
     output <- .Call(
@@ -137,7 +137,12 @@ skylight <- function(
       n = as.integer(nrow(forcing))
     )
 
-    return(output)
+    output <- matrix(output, nrow(forcing), 8, byrow = FALSE)
+    colnames(output) <- c("sun_azimuth","sun_altitude", "sun_illuminance",
+                       "moon_azimuth", "moon_altitude", "moon_illuminance",
+                       "moon_fraction","total_illuminance")
+
+    return(data.frame(output))
   } else {
 
     # calculate hours as a decimal number
