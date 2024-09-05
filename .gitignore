@@ -6,3 +6,5 @@ data-raw/
 data/
 docs/
 CRAN-SUBMISSION
+src/*.o
+src/*.mod
