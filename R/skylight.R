@@ -30,7 +30,7 @@
 #'  can be considered a scaling factor, substituting it with the (inverse)
 #'  slope parameter of an empirical fit should render more accurate results.
 #'  (this can be a single value or vector of values)
-#'  @param fast fast processing
+#' @param fast fast processing (TRUE or FALSE)
 #'
 #' @return Sun and moon illuminance values (in lux), as well as their respective
 #' location in the sky (altitude, azimuth).
@@ -293,4 +293,8 @@ skylight <- function(
     # return a data frame
     return(output)
   }
+}
+
+.onUnload <- function(libpath) {
+  library.dynam.unload("skylight", libpath)
 }
