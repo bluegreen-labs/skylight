@@ -1,5 +1,7 @@
 module subroutines
 
+    use, intrinsic :: iso_c_binding
+
   ! basically no implicit assingments, need to make them
   ! using array size (n) per subroutine or can I use (:)?
 
@@ -17,10 +19,10 @@ module subroutines
     )
 
     !implicit none
-    real, intent(in) :: D(:)
-    real, intent(in) :: DR, RD, CE, SE
-    real, intent(out), dimension(size(D,1)) :: T, G, LS, AS, SD, DS
-    real, dimension(size(D,1)) :: Y
+    real(kind = c_double), intent(in) :: D(:)
+    real(kind = c_double), intent(in) :: DR, RD, CE, SE
+    real(kind = c_double), intent(out), dimension(size(D,1)) :: T, G, LS, AS, SD, DS
+    real(kind = c_double), dimension(size(D,1)) :: Y
 
     T = 280.46 + 0.98565 * D
     T = T - (int(T/360.0) * 360.0)
@@ -56,10 +58,10 @@ module subroutines
     )
 
     implicit none
-    real, intent(in) :: D(:), G(:)
-    real, intent(in) :: CE, SE, RD, DR
-    real, intent(out), dimension(size(D,1)) :: V, SD, AS, DS, CB
-    real, dimension(size(D,1)) :: Y, X, W, CD, O, P, Q, S, SB, SV
+    real(kind = c_double), intent(in) :: D(:), G(:)
+    real(kind = c_double), intent(in) :: CE, SE, RD, DR
+    real(kind = c_double), intent(out), dimension(size(D,1)) :: V, SD, AS, DS, CB
+    real(kind = c_double), dimension(size(D,1)) :: Y, X, W, CD, O, P, Q, S, SB, SV
 
     V = 218.32 + 13.1764 * D
     V = V - int(V / 360.0) * 360.0
@@ -111,13 +113,13 @@ module subroutines
 
     implicit none
 
-    real, intent(inout) :: H(:)
-    real, intent(in) :: DS(:), SD(:), CI(:), SI(:)
-    real, intent(in) :: DR, RD
-    real, intent(out), dimension(size(H, 1)) :: AZ
-    real, dimension(size(H, 1)) :: CS, Q, P
+    real(kind = c_double), intent(inout) :: H(:)
+    real(kind = c_double), intent(in) :: DS(:), SD(:), CI(:), SI(:)
+    real(kind = c_double), intent(in) :: DR, RD
+    real(kind = c_double), intent(out), dimension(size(H, 1)) :: AZ
+    real(kind = c_double), dimension(size(H, 1)) :: CS, Q, P
 
-    real, dimension(size(DS,1)) :: CD
+    real(kind = c_double), dimension(size(DS,1)) :: CD
 
     CD = cos(DS)
     CS = cos(H * DR)
@@ -147,9 +149,9 @@ module subroutines
   subroutine refr(H, DR, HA)
     implicit none
 
-    real, intent(in) :: H(:)
-    real, intent(in) :: DR
-    real, intent(out), dimension(size(H,1)) :: HA
+    real(kind = c_double), intent(in) :: H(:)
+    real(kind = c_double), intent(in) :: DR
+    real(kind = c_double), intent(out), dimension(size(H,1)) :: HA
 
     where (H < -5.0 / 6.0)
       HA = H
@@ -169,15 +171,15 @@ module subroutines
   subroutine atmos(HA, DR, M)
     implicit none
 
-    real, intent(in) :: HA(:)
-    real, intent(in) :: DR
-    real, intent(out), dimension(size(HA, 1)) :: M
+    real(kind = c_double), intent(in) :: HA(:)
+    real(kind = c_double), intent(in) :: DR
+    real(kind = c_double), intent(out), dimension(size(HA, 1)) :: M
 
     ! internal variables
-    real, dimension(size(HA, 1)) :: U, S
+    real(kind = c_double), dimension(size(HA, 1)) :: U, S
 
     ! constant
-    real :: X
+    real(kind = c_double) :: X
 
     U = sin(HA * DR)
     X = 753.66156

@@ -162,7 +162,7 @@ skylight <- function(
       as.integer(275 * month/9) +
       day - 730531
 
-    E <- hour_dec/24
+    E <- hour_dec / 24
     D <- J - 0.5 + E
 
     #---- calculate solar parameters ----
