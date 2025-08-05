@@ -30,6 +30,7 @@
 #'  can be considered a scaling factor, substituting it with the (inverse)
 #'  slope parameter of an empirical fit should render more accurate results.
 #'  (this can be a single value or vector of values)
+#' @param fast switch to fast Rcpp implementation
 #'
 #' @return Sun and moon illuminance values (in lux), as well as their respective
 #' location in the sky (altitude, azimuth).
@@ -71,8 +72,9 @@ skylight <- function(
     longitude,
     latitude,
     date,
-    sky_condition = 1
-    ){
+    sky_condition = 1,
+    fast = FALSE
+){
 
   # pipe friendly function checks
   if(!missing(.data)){
@@ -136,13 +138,23 @@ skylight <- function(
   D <- J - 0.5 + E
 
   #---- calculate solar parameters ----
-  solar_parameters <- sun(
-    D,
-    DR,
-    RD,
-    CE,
-    SE
-  )
+  if(fast){
+    solar_parameters <- skylight:::sun_rcpp(
+      D,
+      DR,
+      RD,
+      CE,
+      SE
+    )
+  } else {
+    solar_parameters <- skylight:::sun(
+      D,
+      DR,
+      RD,
+      CE,
+      SE
+    )
+  }
 
   # in place adjustments
   solar_parameters$T <- solar_parameters$T + 360 * E + longitude
@@ -153,32 +165,58 @@ skylight <- function(
   # need proper clarifications as
   # not provided in the original work
   # and taken as is
-  altaz_parameters <- altaz(
-    solar_parameters$DS,
-    solar_parameters$H,
-    solar_parameters$SD,
-    cos(latitude),
-    sin(latitude),
-    DR,
-    RD
-  )
+  if(fast){
+    altaz_parameters <- altaz_rcpp(
+      solar_parameters$DS,
+      solar_parameters$H,
+      solar_parameters$SD,
+      cos(latitude),
+      sin(latitude),
+      DR,
+      RD
+    )
+  } else {
+    altaz_parameters <- altaz(
+      solar_parameters$DS,
+      solar_parameters$H,
+      solar_parameters$SD,
+      cos(latitude),
+      sin(latitude),
+      DR,
+      RD
+    )
+  }
 
   H <- altaz_parameters$H
   Z <- altaz_parameters$H * DR
   solar_azimuth <- altaz_parameters$AZ
 
   # solar altitude calculation
-  solar_altitude <- refr(
-    altaz_parameters$H,
-    DR
+  if(fast){
+    solar_altitude <- refr_rcpp(
+      altaz_parameters$H,
+      DR
     )
+  } else {
+    solar_altitude <- refr(
+      altaz_parameters$H,
+      DR
+    )
+  }
 
   # atmospheric calculations
   # look up references
-  M <- atmos(
-    solar_altitude,
-    DR
-  )
+  if(fast){
+    M <- atmos_rcpp(
+      solar_altitude,
+      DR
+    )
+  } else {
+    M <- atmos(
+      solar_altitude,
+      DR
+    )
+  }
 
   # Solar illuminance in lux, scaled using the value
   # provided by sky_condition. The default does not
@@ -187,36 +225,67 @@ skylight <- function(
   solar_illuminance <- 133775 * M / sky_condition
 
   #---- calculate lunar parameters ----
-  lunar_parameters <- moon(
-    D,
-    solar_parameters$G,
-    CE,
-    SE,
-    RD,
-    DR
-  )
+  if(fast){
+    lunar_parameters <- moon_rcpp(
+      D,
+      solar_parameters$G,
+      CE,
+      SE,
+      RD,
+      DR
+    )
+  } else {
+    lunar_parameters <- moon(
+      D,
+      solar_parameters$G,
+      CE,
+      SE,
+      RD,
+      DR
+    )
+  }
 
   lunar_parameters$H <- solar_parameters$T - lunar_parameters$AS
 
-  altaz_parameters <- altaz(
-    lunar_parameters$DS,
-    lunar_parameters$H,
-    lunar_parameters$SD,
-    cos(latitude),
-    sin(latitude),
-    DR,
-    RD
-  )
+  if(fast){
+    altaz_parameters <- altaz_rcpp(
+      lunar_parameters$DS,
+      lunar_parameters$H,
+      lunar_parameters$SD,
+      cos(latitude),
+      sin(latitude),
+      DR,
+      RD
+    )
+  } else {
+    altaz_parameters <- altaz(
+      lunar_parameters$DS,
+      lunar_parameters$H,
+      lunar_parameters$SD,
+      cos(latitude),
+      sin(latitude),
+      DR,
+      RD
+    )
+  }
 
   # corrections?
   Z <- altaz_parameters$H * DR
   H <- altaz_parameters$H - 0.95 * cos(altaz_parameters$H * DR)
 
   # calculate lunar altitude
-  lunar_altitude <- refr(H, DR)
+  if(fast){
+    lunar_altitude <- refr_rcpp(H, DR)
+  } else {
+    lunar_altitude <- refr(H, DR)
+  }
 
   # atmospheric conditions?
-  M <- atmos(lunar_altitude, DR)
+  if(fast){
+    M <- atmos_rcpp(lunar_altitude, DR)
+  } else {
+    M <- atmos(lunar_altitude, DR)
+  }
 
   E <- acos(cos(lunar_parameters$V - solar_parameters$LS) * lunar_parameters$CB)
   P <- 0.892 * exp(-3.343/((tan(E/2.0))^0.632)) + 0.0344 * (sin(E) - E * cos(E))

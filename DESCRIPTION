@@ -18,11 +18,14 @@ Description: A tool to calculate sky illuminance values (in lux) for both sun an
 URL: https://github.com/bluegreen-labs/skylight, https://bluegreen-labs.github.io/skylight/
 BugReports: https://github.com/bluegreen-labs/skylight/issues
 Depends:
-    R (>= 3.6)
+    R (>= 3.6),
+Imports:
+    Rcpp (>= 1.0.14)
+LinkingTo: Rcpp
 License: AGPL-3
 LazyData: false
 ByteCompile: true
-RoxygenNote: 7.2.1
+RoxygenNote: 7.3.2
 Suggests:
     tidyr,
     rnaturalearth,

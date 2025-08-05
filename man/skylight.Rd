@@ -4,7 +4,7 @@
 \alias{skylight}
 \title{Sky illuminance values for the sun and moon}
 \usage{
-skylight(.data, longitude, latitude, date, sky_condition = 1)
+skylight(.data, longitude, latitude, date, sky_condition = 1, fast = FALSE)
 }
 \arguments{
 \item{.data}{A data frame or data frame extension (e.g. a tibble) with
@@ -23,6 +23,8 @@ illuminance values (1 = cloud cover < 30%, 2 = thin veiled clouds
 can be considered a scaling factor, substituting it with the (inverse)
 slope parameter of an empirical fit should render more accurate results.
 (this can be a single value or vector of values)}
+
+\item{fast}{switch to fast Rcpp implementation}
 }
 \value{
 Sun and moon illuminance values (in lux), as well as their respective
@@ -49,13 +51,33 @@ The original code has been vectorized, as such vectors of
 location, time and/or sky conditions can be provided.
 }
 \examples{
+
+ # run the function on standard
+ # input variables (single values or vectors of equal size)
  df <- skylight(
   longitude = -135.8,
   latitude = -23.4,
   date = as.POSIXct("1986-12-18 21:00:00", tz = "GMT"),
   sky_condition = 1
-)
+ )
 
-print(df)
+ print(df)
+
+ # create data frame of input variables
+ input <- data.frame(
+   longitude = 0,
+   latitude = 50,
+   date =  as.POSIXct("2020-06-18 00:00:00", tz = "GMT") + seq(0, 1*24*3600, 1800),
+   sky_condition = 1
+  )
+
+  # calculate on data frame
+  df <- skylight(input)
+
+  print(df)
+
+  # the above statement can also be used
+  # in a piped fashion in R >= 4.2
+  # input |> skylight()
 
 }
