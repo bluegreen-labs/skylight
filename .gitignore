@@ -8,3 +8,4 @@ docs/
 CRAN-SUBMISSION
 src/*.o
 src/*.mod
+src/*.so
