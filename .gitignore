@@ -6,3 +6,4 @@ data-raw/
 data/
 docs/
 src/*.o
+src/*.so
