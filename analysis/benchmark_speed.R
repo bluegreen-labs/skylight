@@ -19,7 +19,8 @@ results <- microbenchmark(
     sky_condition = 1,
     fast = FALSE
   ),
-  times = 100
+  times = 100,
+  unit = "ms"
 )
 
 print(results)
@@ -41,7 +42,8 @@ results <- microbenchmark(
     sky_condition = 1,
     fast = FALSE
   ),
-  times = 100
+  times = 100,
+  unit = "ms"
 )
 
 print(results)
