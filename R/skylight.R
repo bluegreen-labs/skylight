@@ -139,7 +139,7 @@ skylight <- function(
 
   #---- calculate solar parameters ----
   if(fast){
-    solar_parameters <- skylight:::sun_rcpp(
+    solar_parameters <- sun_rcpp(
       D,
       DR,
       RD,
@@ -147,7 +147,7 @@ skylight <- function(
       SE
     )
   } else {
-    solar_parameters <- skylight:::sun(
+    solar_parameters <- sun(
       D,
       DR,
       RD,
