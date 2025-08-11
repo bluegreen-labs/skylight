@@ -1,9 +1,14 @@
-#include <Rcpp.h>
+#include <RcppArmadillo.h>
+// [[Rcpp::depends(RcppArmadillo)]]
+
 using namespace Rcpp;
+using namespace std;
+using namespace arma;
+
 
 // [[Rcpp::export]]
 DataFrame sun_rcpp(
-  NumericVector D,
+  arma::vec D,
   double DR,
   double RD,
   double CE,
@@ -11,35 +16,36 @@ DataFrame sun_rcpp(
 ) {
   int n = D.size();
 
-  NumericVector T(n);
-  NumericVector G(n);
-  NumericVector LS(n);
-  NumericVector AS(n);
-  NumericVector Y(n);
-  NumericVector SD(n);
-  NumericVector DS(n);
+  arma::vec T(n);
+  arma::vec G(n);
+  arma::vec LS(n);
+  arma::vec AS(n);
+  arma::vec Y(n);
+  arma::vec SD(n);
+  arma::vec DS(n);
 
-  for (int i = 0; i < n; ++i) {
-    T[i] = 280.46 + 0.98565 * D[i];
-    T[i] = T[i] - static_cast<int>(T[i] / 360) * 360;
 
-    if (T[i] < 0) {
-      T[i] = T[i] + 360;
-    }
+    T = 280.46 + 0.98565 * D;
+    T = T - floor(T / 360) * 360;
 
-    G[i] = (357.5 + 0.98560 * D[i]) * DR;
-    LS[i] = (T[i] + 1.91 * sin(G[i])) * DR;
-    AS[i] = atan(CE * tan(LS[i])) * RD;
-    Y[i] = cos(LS[i]);
+    T.elem(find(T < 0)) += 360;
+    //if (T < 0) {
+    //  T = T + 360;
+    //}
 
-    if (Y[i] < 0) {
-      AS[i] = AS[i] + 180;
-    }
+    G = (357.5 + 0.98560 * D) * DR;
+    LS = (T + 1.91 * sin(G)) * DR;
+    AS = atan(CE * tan(LS)) * RD;
+    Y = cos(LS);
 
-    SD[i] = SE * sin(LS[i]);
-    DS[i] = asin(SD[i]);
-    T[i] = T[i] - 180;
-  }
+    AS.elem(find(Y<0)) += 180;
+    //if (Y < 0) {
+    //  AS = AS + 180;
+    //}
+
+    SD = SE * sin(LS);
+    DS = asin(SD);
+    T = T - 180;
 
   return DataFrame::create(
     Named("T") = T,
@@ -53,8 +59,8 @@ DataFrame sun_rcpp(
 
 // [[Rcpp::export]]
 DataFrame moon_rcpp(
-  NumericVector D,
-  NumericVector G,
+  arma::vec D,
+  arma::vec G,
   double CE,
   double SE,
   double RD,
@@ -62,62 +68,56 @@ DataFrame moon_rcpp(
 ) {
  int n = D.size();
 
- NumericVector V(n);
- NumericVector Y(n);
- NumericVector O(n);
- NumericVector W(n);
- NumericVector SB_Y(n);
- NumericVector CB_Y(n);
- NumericVector X(n);
- NumericVector S(n);
- NumericVector SD_W(n);
- NumericVector CD_W(n);
- NumericVector V_new(n);
- NumericVector Y_new(n);
- NumericVector SV(n);
- NumericVector SB_Y_new(n);
- NumericVector CB_Y_new(n);
- NumericVector Q(n);
- NumericVector P(n);
- NumericVector SD_final(n);
- NumericVector DS(n);
- NumericVector AS(n);
+ arma::vec V(n);
+ arma::vec Y(n);
+ arma::vec O(n);
+ arma::vec W(n);
+ arma::vec SB_Y(n);
+ arma::vec CB_Y(n);
+ arma::vec X(n);
+ arma::vec S(n);
+ arma::vec SD_W(n);
+ arma::vec CD_W(n);
+ arma::vec V_new(n);
+ arma::vec Y_new(n);
+ arma::vec SV(n);
+ arma::vec SB_Y_new(n);
+ arma::vec CB_Y_new(n);
+ arma::vec Q(n);
+ arma::vec P(n);
+ arma::vec SD_final(n);
+ arma::vec DS(n);
+ arma::vec AS(n);
 
- for (int i = 0; i < n; ++i) {
-   V[i] = 218.32 + 13.1764 * D[i];
-   V[i] = V[i] - static_cast<int>(V[i] / 360) * 360;
+   V = 218.32 + 13.1764 * D;
+   V = V - floor(V / 360) * 360;
+   V.elem(find(V < 0)) += 360;
 
-   if (V[i] < 0) {
-     V[i] = V[i] + 360;
-   }
+   Y = (134.96 + 13.06499 * D) * DR;
+   O = (93.27 + 13.22935 * D) * DR;
+   W = (235.7 + 24.38150 * D) * DR;
 
-   Y[i] = (134.96 + 13.06499 * D[i]) * DR;
-   O[i] = (93.27 + 13.22935 * D[i]) * DR;
-   W[i] = (235.7 + 24.38150 * D[i]) * DR;
-   SB_Y[i] = sin(Y[i]);
-   CB_Y[i] = cos(Y[i]);
-   X[i] = sin(O[i]);
-   S[i] = cos(O[i]);
-   SD_W[i] = sin(W[i]);
-   CD_W[i] = cos(W[i]);
+   SB_Y = sin(Y);
+   CB_Y = cos(Y);
+   X = sin(O);
+   S = cos(O);
+   SD_W = sin(W);
+   CD_W = cos(W);
 
-   V_new[i] = (V[i] + (6.29 - 1.27 * CD_W[i] + 0.43 * CB_Y[i]) * SB_Y[i] + (0.66 + 1.27 * CB_Y[i]) * SD_W[i] -
-     0.19 * sin(G[i]) - 0.23 * X[i] * S[i]) * DR;
-   Y_new[i] = ((5.13 - 0.17 * CD_W[i]) * X[i] + (0.56 * SB_Y[i] + 0.17 * SD_W[i]) * S[i]) * DR;
+   V_new = (V + (6.29 - 1.27 * CD_W + 0.43 * CB_Y) % SB_Y + (0.66 + 1.27 * CB_Y) % SD_W -
+     0.19 * sin(G) - 0.23 * X % S) * DR;
+   Y_new = ((5.13 - 0.17 * CD_W) % X + (0.56 * SB_Y + 0.17 * SD_W) % S) * DR;
 
-   SV[i] = sin(V_new[i]);
-   SB_Y_new[i] = sin(Y_new[i]);
-   CB_Y_new[i] = cos(Y_new[i]);
-   Q[i] = CB_Y_new[i] * cos(V_new[i]);
-   P[i] = CE * SV[i] * CB_Y_new[i] - SE * SB_Y_new[i];
-   SD_final[i] = SE * SV[i] * CB_Y_new[i] + CE * SB_Y_new[i];
-   DS[i] = asin(SD_final[i]);
-   AS[i] = atan(P[i] / Q[i]) * RD;
+   SV = sin(V_new);
+   SB_Y_new = sin(Y_new);
+   CB_Y_new = cos(Y_new);
+   Q = CB_Y_new % cos(V_new);
+   P = CE * SV % CB_Y_new - SE * SB_Y_new;
+   SD_final = SE * SV % CB_Y_new + CE * SB_Y_new;
+   DS = asin(SD_final);
+   AS = atan(P / Q) * RD;
 
-   if (Q[i] < 0) {
-     AS[i] = AS[i] + 180;
-   }
- }
+   AS.elem(find(Q<0)) += 180;
 
  return DataFrame::create(
    Named("V") = V_new,
@@ -130,9 +130,9 @@ DataFrame moon_rcpp(
 
 // [[Rcpp::export]]
 DataFrame altaz_rcpp(
-  NumericVector DS,
-  NumericVector H,
-  NumericVector SD,
+  arma::vec DS,
+  arma::vec H,
+  arma::vec SD,
   double CI,
   double SI,
   double DR,
@@ -140,31 +140,24 @@ DataFrame altaz_rcpp(
 ) {
  int n = DS.size();
 
- NumericVector CD(n);
- NumericVector CS(n);
- NumericVector Q(n);
- NumericVector P(n);
- NumericVector AZ(n);
- NumericVector H_out(n);
+ arma::vec CD(n);
+ arma::vec CS(n);
+ arma::vec Q(n);
+ arma::vec P(n);
+ arma::vec AZ(n);
+ arma::vec H_out(n);
 
- for (int i = 0; i < n; ++i) {
-   CD[i] = cos(DS[i]);
-   CS[i] = cos(H[i] * DR);
-   Q[i] = SD[i] * CI - CD[i] * SI * CS[i];
-   P[i] = -CD[i] * sin(H[i] * DR);
-   AZ[i] = atan(P[i] / Q[i]) * RD;
+ CD = cos(DS);
+ CS = cos(H * DR);
+ Q = (SD * CI) - (CD * SI) % CS;
+ P = -CD % sin(H * DR);
+ AZ = atan(P / Q) * RD;
 
-   if (Q[i] < 0) {
-     AZ[i] = AZ[i] + 180;
-   }
+ AZ.elem(find(Q < 0)) += 180;
+ AZ.elem(find(AZ < 0)) += 360;
 
-   if (AZ[i] < 0) {
-     AZ[i] = AZ[i] + 360;
-   }
-
-   AZ[i] = static_cast<int>(AZ[i] + 0.5);
-   H_out[i] = asin(SD[i] * SI + CD[i] * CI * CS[i]) * RD;
- }
+ AZ = floor(AZ + 0.5);
+ H_out = asin(SD * SI + (CD * CI) % CS) * RD;
 
  return DataFrame::create(
    Named("H") = H_out,
@@ -172,14 +165,13 @@ DataFrame altaz_rcpp(
  );
 }
 
-
 // [[Rcpp::export]]
-NumericVector refr_rcpp(
-  NumericVector H,
+arma::vec refr_rcpp(
+  arma::vec H,
   double DR
 ) {
  int n = H.size();
- NumericVector HA(n);
+ arma::vec HA(n);
 
  for (int i = 0; i < n; ++i) {
    if (H[i] < -5.0 / 6.0) {
@@ -192,26 +184,23 @@ NumericVector refr_rcpp(
  return HA;
 }
 
-
 // [[Rcpp::export]]
-NumericVector atmos_rcpp(
-  NumericVector HA,
+arma::vec atmos_rcpp(
+  arma::vec HA,
   double DR
 ) {
  int n = HA.size();
 
- NumericVector U(n);
+ arma::vec U(n);
  double X = 753.66156;
- NumericVector S(n);
- NumericVector M(n);
+ arma::vec S(n);
+ arma::vec M(n);
 
- for (int i = 0; i < n; ++i) {
-   U[i] = sin(HA[i] * DR);
-   S[i] = asin(X * cos(HA[i] * DR) / (X + 1.0));
-   M[i] = X * (cos(S[i]) - U[i]) + cos(S[i]);
-   M[i] = exp(-0.21 * M[i]) * U[i] + 0.0289 * exp(-0.042 * M[i]) *
-     (1.0 + (HA[i] + 90.0) * U[i] / 57.29577951);
- }
+  U = sin(HA * DR);
+  S = asin(X * cos(HA * DR) / (X + 1.0));
+  M = X * (cos(S) - U) + cos(S);
+  M = exp(-0.21 * M) % U + 0.0289 * exp(-0.042 * M) %
+     (1.0 + (HA + 90.0) % U / 57.29577951);
 
  return M;
 }

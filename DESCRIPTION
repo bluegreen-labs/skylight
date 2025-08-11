@@ -21,7 +21,7 @@ Depends:
     R (>= 3.6),
 Imports:
     Rcpp (>= 1.0.14)
-LinkingTo: Rcpp
+LinkingTo: Rcpp, RcppArmadillo
 License: AGPL-3
 LazyData: false
 ByteCompile: true

@@ -23,9 +23,10 @@ results <- microbenchmark(
   unit = "ms"
 )
 
+par(mfrow=c(2,1))
+
 print(results)
 boxplot(results, names=c('fast', 'slow'))
-
 
 results <- microbenchmark(
   skylight(
