@@ -1,13 +1,10 @@
 #include <RcppArmadillo.h>
-// [[Rcpp::depends(RcppArmadillo)]]
 
 using namespace Rcpp;
 using namespace std;
 using namespace arma;
 
-
-// [[Rcpp::export]]
-DataFrame sun_rcpp(
+arma::mat sun(
   arma::vec D,
   double DR,
   double RD,
@@ -16,6 +13,7 @@ DataFrame sun_rcpp(
 ) {
   int n = D.size();
 
+  arma::mat output(n, 6);
   arma::vec T(n);
   arma::vec G(n);
   arma::vec LS(n);
@@ -24,41 +22,35 @@ DataFrame sun_rcpp(
   arma::vec SD(n);
   arma::vec DS(n);
 
+  // sanitize with references
+  // directly to output, without
+  // temporary memory allocation
+  T = 280.46 + 0.98565 * D;
+  T = T - floor(T / 360) * 360;
+  T.elem(find(T < 0)) += 360;
 
-    T = 280.46 + 0.98565 * D;
-    T = T - floor(T / 360) * 360;
+  G = (357.5 + 0.98560 * D) * DR;
+  LS = (T + 1.91 * sin(G)) * DR;
+  AS = atan(CE * tan(LS)) * RD;
+  Y = cos(LS);
 
-    T.elem(find(T < 0)) += 360;
-    //if (T < 0) {
-    //  T = T + 360;
-    //}
+  AS.elem(find(Y<0)) += 180;
 
-    G = (357.5 + 0.98560 * D) * DR;
-    LS = (T + 1.91 * sin(G)) * DR;
-    AS = atan(CE * tan(LS)) * RD;
-    Y = cos(LS);
+  SD = SE * sin(LS);
+  DS = asin(SD);
+  T = T - 180;
 
-    AS.elem(find(Y<0)) += 180;
-    //if (Y < 0) {
-    //  AS = AS + 180;
-    //}
+  output.col(0) = T;
+  output.col(1) = G;
+  output.col(2) = LS;
+  output.col(3) = AS;
+  output.col(4) = SD;
+  output.col(5) = DS;
 
-    SD = SE * sin(LS);
-    DS = asin(SD);
-    T = T - 180;
-
-  return DataFrame::create(
-    Named("T") = T,
-    Named("G") = G,
-    Named("LS") = LS,
-    Named("AS") = AS,
-    Named("SD") = SD,
-    Named("DS") = DS
-  );
+  return output;
 }
 
-// [[Rcpp::export]]
-DataFrame moon_rcpp(
+arma::mat moon(
   arma::vec D,
   arma::vec G,
   double CE,
@@ -68,6 +60,7 @@ DataFrame moon_rcpp(
 ) {
  int n = D.size();
 
+  arma::mat output(n, 5);
  arma::vec V(n);
  arma::vec Y(n);
  arma::vec O(n);
@@ -119,26 +112,27 @@ DataFrame moon_rcpp(
 
    AS.elem(find(Q<0)) += 180;
 
- return DataFrame::create(
-   Named("V") = V_new,
-   Named("SD") = SD_final,
-   Named("AS") = AS,
-   Named("DS") = DS,
-   Named("CB") = CB_Y_new
- );
+  output.col(0) = V_new;
+  output.col(1) = SD_final;
+  output.col(2) = AS;
+  output.col(3) = DS;
+  output.col(4) = CB_Y_new;
+
+  return output;
 }
 
-// [[Rcpp::export]]
-DataFrame altaz_rcpp(
+arma::mat altaz(
   arma::vec DS,
   arma::vec H,
   arma::vec SD,
-  double CI,
-  double SI,
+  arma::vec CI,
+  arma::vec SI,
   double DR,
   double RD
 ) {
  int n = DS.size();
+
+ arma::mat output(n, 2);
 
  arma::vec CD(n);
  arma::vec CS(n);
@@ -149,24 +143,20 @@ DataFrame altaz_rcpp(
 
  CD = cos(DS);
  CS = cos(H * DR);
- Q = (SD * CI) - (CD * SI) % CS;
+ Q = (SD % CI) - (CD % SI) % CS;
  P = -CD % sin(H * DR);
  AZ = atan(P / Q) * RD;
 
  AZ.elem(find(Q < 0)) += 180;
  AZ.elem(find(AZ < 0)) += 360;
 
- AZ = floor(AZ + 0.5);
- H_out = asin(SD * SI + (CD * CI) % CS) * RD;
+ output.col(0) = floor(AZ + 0.5); //AZ
+ output.col(1) = asin(SD % SI + (CD % CI) % CS) * RD; //H
 
- return DataFrame::create(
-   Named("H") = H_out,
-   Named("AZ") = AZ
- );
+ return output;
 }
 
-// [[Rcpp::export]]
-arma::vec refr_rcpp(
+arma::vec refr(
   arma::vec H,
   double DR
 ) {
@@ -184,8 +174,7 @@ arma::vec refr_rcpp(
  return HA;
 }
 
-// [[Rcpp::export]]
-arma::vec atmos_rcpp(
+arma::vec atmos(
   arma::vec HA,
   double DR
 ) {

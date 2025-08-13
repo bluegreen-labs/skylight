@@ -11,85 +11,20 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// sun_rcpp
-DataFrame sun_rcpp(arma::vec D, double DR, double RD, double CE, double SE);
-RcppExport SEXP _skylight_sun_rcpp(SEXP DSEXP, SEXP DRSEXP, SEXP RDSEXP, SEXP CESEXP, SEXP SESEXP) {
+// skylight_rcpp
+arma::mat skylight_rcpp(arma::mat forcing);
+RcppExport SEXP _skylight_skylight_rcpp(SEXP forcingSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type D(DSEXP);
-    Rcpp::traits::input_parameter< double >::type DR(DRSEXP);
-    Rcpp::traits::input_parameter< double >::type RD(RDSEXP);
-    Rcpp::traits::input_parameter< double >::type CE(CESEXP);
-    Rcpp::traits::input_parameter< double >::type SE(SESEXP);
-    rcpp_result_gen = Rcpp::wrap(sun_rcpp(D, DR, RD, CE, SE));
-    return rcpp_result_gen;
-END_RCPP
-}
-// moon_rcpp
-DataFrame moon_rcpp(arma::vec D, arma::vec G, double CE, double SE, double RD, double DR);
-RcppExport SEXP _skylight_moon_rcpp(SEXP DSEXP, SEXP GSEXP, SEXP CESEXP, SEXP SESEXP, SEXP RDSEXP, SEXP DRSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type D(DSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type G(GSEXP);
-    Rcpp::traits::input_parameter< double >::type CE(CESEXP);
-    Rcpp::traits::input_parameter< double >::type SE(SESEXP);
-    Rcpp::traits::input_parameter< double >::type RD(RDSEXP);
-    Rcpp::traits::input_parameter< double >::type DR(DRSEXP);
-    rcpp_result_gen = Rcpp::wrap(moon_rcpp(D, G, CE, SE, RD, DR));
-    return rcpp_result_gen;
-END_RCPP
-}
-// altaz_rcpp
-DataFrame altaz_rcpp(arma::vec DS, arma::vec H, arma::vec SD, double CI, double SI, double DR, double RD);
-RcppExport SEXP _skylight_altaz_rcpp(SEXP DSSEXP, SEXP HSEXP, SEXP SDSEXP, SEXP CISEXP, SEXP SISEXP, SEXP DRSEXP, SEXP RDSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type DS(DSSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type H(HSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type SD(SDSEXP);
-    Rcpp::traits::input_parameter< double >::type CI(CISEXP);
-    Rcpp::traits::input_parameter< double >::type SI(SISEXP);
-    Rcpp::traits::input_parameter< double >::type DR(DRSEXP);
-    Rcpp::traits::input_parameter< double >::type RD(RDSEXP);
-    rcpp_result_gen = Rcpp::wrap(altaz_rcpp(DS, H, SD, CI, SI, DR, RD));
-    return rcpp_result_gen;
-END_RCPP
-}
-// refr_rcpp
-arma::vec refr_rcpp(arma::vec H, double DR);
-RcppExport SEXP _skylight_refr_rcpp(SEXP HSEXP, SEXP DRSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type H(HSEXP);
-    Rcpp::traits::input_parameter< double >::type DR(DRSEXP);
-    rcpp_result_gen = Rcpp::wrap(refr_rcpp(H, DR));
-    return rcpp_result_gen;
-END_RCPP
-}
-// atmos_rcpp
-arma::vec atmos_rcpp(arma::vec HA, double DR);
-RcppExport SEXP _skylight_atmos_rcpp(SEXP HASEXP, SEXP DRSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type HA(HASEXP);
-    Rcpp::traits::input_parameter< double >::type DR(DRSEXP);
-    rcpp_result_gen = Rcpp::wrap(atmos_rcpp(HA, DR));
+    Rcpp::traits::input_parameter< arma::mat >::type forcing(forcingSEXP);
+    rcpp_result_gen = Rcpp::wrap(skylight_rcpp(forcing));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_skylight_sun_rcpp", (DL_FUNC) &_skylight_sun_rcpp, 5},
-    {"_skylight_moon_rcpp", (DL_FUNC) &_skylight_moon_rcpp, 6},
-    {"_skylight_altaz_rcpp", (DL_FUNC) &_skylight_altaz_rcpp, 7},
-    {"_skylight_refr_rcpp", (DL_FUNC) &_skylight_refr_rcpp, 2},
-    {"_skylight_atmos_rcpp", (DL_FUNC) &_skylight_atmos_rcpp, 2},
+    {"_skylight_skylight_rcpp", (DL_FUNC) &_skylight_skylight_rcpp, 1},
     {NULL, NULL, 0}
 };
 
