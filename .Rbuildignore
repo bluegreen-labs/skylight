@@ -7,7 +7,6 @@
 ^data-raw$
 ^manuscript$
 ^map.gif$
-#^src$
 
 # R-markdown files in the root folder.
 ^LICENSE$
@@ -26,3 +25,4 @@
 ^logo\..*$
 ^codemeta\.json$
 ^CRAN-SUBMISSION$
+analysis/

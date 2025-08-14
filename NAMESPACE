@@ -1,3 +1,5 @@
 useDynLib(skylight, .registration=TRUE)
 importFrom(Rcpp, evalCpp)
-exportPattern("^[[:alpha:]]+")
+#exportPattern("^[[:alpha:]]+")
+export(skylight)
+export(skylight_rcpp)

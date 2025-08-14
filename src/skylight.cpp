@@ -10,6 +10,17 @@ const double DR = 1.0 / RD;
 const double CE = 0.91775;
 const double SE = 0.39715;
 
+//' fast C++ implementation of the skylight model
+//'
+//' Calculates sky illuminance values faster. This function
+//' should not be called independently and the formal R
+//' skylight() function should be used with the parameter
+//' fast = TRUE!
+//'
+//' @param forcing input matrix with forcing parameters organized
+//'  as longitude, latitude, year, month, day, hour, minutes,
+//'  sky_conditions
+//' @return sky illuminance results as a matrix
 // [[Rcpp::export]]
 arma::mat skylight_rcpp(arma::mat forcing) {
 
