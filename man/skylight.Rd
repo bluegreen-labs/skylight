@@ -24,7 +24,7 @@ can be considered a scaling factor, substituting it with the (inverse)
 slope parameter of an empirical fit should render more accurate results.
 (this can be a single value or vector of values)}
 
-\item{fast}{switch to fast Rcpp implementation}
+\item{fast}{fast processing (TRUE or FALSE)}
 }
 \value{
 Sun and moon illuminance values (in lux), as well as their respective
