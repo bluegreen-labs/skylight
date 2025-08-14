@@ -7,17 +7,7 @@ test_that("check skylight function against known outputs", {
   # longitude correction
   d <- d - 39.5 * (60*60)/15
 
-  vectorized_output <- round(
-    skylight(
-      longitude = c(-135.8, 39.5),
-      latitude = c(-23.4, 21.3),
-      date = c(as.POSIXct("1986-12-18 21:00:00", tz = "GMT"),
-        d
-      ),
-      sky_condition = c(1,1)
-    )
-  )
-
+  # format reference data
   reference <- data.frame(
     "sun_azimuth" = c(346,286),
     "sun_altitude" = c(90,0),
@@ -29,7 +19,34 @@ test_that("check skylight function against known outputs", {
     "total_illuminance" = c(123786,697)
   )
 
+  vectorized_output <- round(
+    skylight(
+      longitude = c(-135.8, 39.5),
+      latitude = c(-23.4, 21.3),
+      date = c(as.POSIXct("1986-12-18 21:00:00", tz = "GMT"),
+        d
+      ),
+      sky_condition = c(1,1)
+    )
+  )
+
   expect_equal(vectorized_output, reference)
+
+  # check fast version
+  vectorized_output <- round(
+    skylight(
+      longitude = c(-135.8, 39.5),
+      latitude = c(-23.4, 21.3),
+      date = c(as.POSIXct("1986-12-18 21:00:00", tz = "GMT"),
+               d
+      ),
+      sky_condition = c(1,1),
+      fast = TRUE
+    )
+  )
+
+  expect_equal(vectorized_output, reference)
+
 })
 
 test_that("piped input tests", {
