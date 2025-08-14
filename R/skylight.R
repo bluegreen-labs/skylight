@@ -71,8 +71,7 @@ skylight <- function(
     longitude,
     latitude,
     date,
-    sky_condition = 1,
-    fast = FALSE
+    sky_condition = 1
 ){
 
   # pipe friendly function checks

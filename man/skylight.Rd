@@ -4,7 +4,7 @@
 \alias{skylight}
 \title{Sky illuminance values for the sun and moon}
 \usage{
-skylight(.data, longitude, latitude, date, sky_condition = 1, fast = FALSE)
+skylight(.data, longitude, latitude, date, sky_condition = 1)
 }
 \arguments{
 \item{.data}{A data frame or data frame extension (e.g. a tibble) with
