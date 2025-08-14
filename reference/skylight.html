@@ -3,7 +3,7 @@
 both the sun and the moon, in addition to some
 ancillary parameters such as sun and moon azimuth
 and altitude."><meta property="og:image" content="/logo.png"><meta name="twitter:card" content="summary"></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -24,7 +24,7 @@ and altitude."><meta property="og:image" content="/logo.png"><meta name="twitter
         <a class="external-link hidden-md hidden-lg" href="https://bluegreenlabs.org">
           <img src="https://bluegreenlabs.org/img/logo.png" id="hexlogo" alt="bluegreen labs"></a>
         <a class="navbar-brand" href="../index.html">
-           <i>skylight <small>v1.2</small></i>
+           <i>skylight <small>v1.3</small></i>
         </a>
       </div>
     </div>
@@ -39,7 +39,7 @@ and altitude."><meta property="og:image" content="/logo.png"><meta name="twitter
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -52,20 +52,20 @@ and altitude."><meta property="og:image" content="/logo.png"><meta name="twitter
         <li>
   <a href="https://github.com/bluegreen-labs/skylight/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Sky illuminance values for the sun and moon</h1>
-    <small class="dont-index">Source: <a href="https://github.com/bluegreen-labs/skylight/blob/HEAD/R/skylight.R" class="external-link"><code>R/skylight.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/bluegreen-labs/skylight/blob/main/R/skylight.R" class="external-link"><code>R/skylight.R</code></a></small>
     <div class="hidden name"><code>skylight.Rd</code></div>
     </div>
 
@@ -77,30 +77,32 @@ and altitude.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">skylight</span><span class="op">(</span><span class="va">.data</span>, <span class="va">longitude</span>, <span class="va">latitude</span>, <span class="va">date</span>, sky_condition <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">skylight</span><span class="op">(</span><span class="va">.data</span>, <span class="va">longitude</span>, <span class="va">latitude</span>, <span class="va">date</span>, sky_condition <span class="op">=</span> <span class="fl">1</span>, fast <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>.data</dt>
+
+
+<dl><dt id="arg--data">.data<a class="anchor" aria-label="anchor" href="#arg--data"></a></dt>
 <dd><p>A data frame or data frame extension (e.g. a tibble) with
 named columns: longitude, latitude, date and optionally sky_condition</p></dd>
 
 
-<dt>longitude</dt>
+<dt id="arg-longitude">longitude<a class="anchor" aria-label="anchor" href="#arg-longitude"></a></dt>
 <dd><p>decimal longitude (single value or vector of values)</p></dd>
 
 
-<dt>latitude</dt>
+<dt id="arg-latitude">latitude<a class="anchor" aria-label="anchor" href="#arg-latitude"></a></dt>
 <dd><p>decimal latitude (single value or vector of values)</p></dd>
 
 
-<dt>date</dt>
+<dt id="arg-date">date<a class="anchor" aria-label="anchor" href="#arg-date"></a></dt>
 <dd><p>date and time in POSIXct format with GMT/UTC as time zone
 (single value or vector of values)</p></dd>
 
 
-<dt>sky_condition</dt>
+<dt id="arg-sky-condition">sky_condition<a class="anchor" aria-label="anchor" href="#arg-sky-condition"></a></dt>
 <dd><p>a positive value (&gt;=1) with which to scale
 illuminance values (1 = cloud cover &lt; 30<!-- %, 2 = thin veiled clouds -->
 3 = average clouds, 10 = dark stratus clouds). By and large this
@@ -108,12 +110,14 @@ can be considered a scaling factor, substituting it with the (inverse)
 slope parameter of an empirical fit should render more accurate results.
 (this can be a single value or vector of values)</p></dd>
 
+
+<dt id="arg-fast">fast<a class="anchor" aria-label="anchor" href="#arg-fast"></a></dt>
+<dd><p>fast processing (TRUE or FALSE)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>Sun and moon illuminance values (in lux), as well as their respective
+    <p>Sun and moon illuminance values (in lux), as well as their respective
 location in the sky (altitude, azimuth).</p>
     </div>
     <div id="details">
@@ -132,18 +136,188 @@ location, time and/or sky conditions can be provided.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span> <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">skylight</span><span class="op">(</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># run the function on standard</span></span></span>
+<span class="r-in"><span> <span class="co"># input variables (single values or vectors of equal size)</span></span></span>
+<span class="r-in"><span> <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">skylight</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  longitude <span class="op">=</span> <span class="op">-</span><span class="fl">135.8</span>,</span></span>
 <span class="r-in"><span>  latitude <span class="op">=</span> <span class="op">-</span><span class="fl">23.4</span>,</span></span>
 <span class="r-in"><span>  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"1986-12-18 21:00:00"</span>, tz <span class="op">=</span> <span class="st">"GMT"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  sky_condition <span class="op">=</span> <span class="fl">1</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   sun_azimuth sun_altitude sun_illuminance moon_azimuth moon_altitude</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1         346      89.9565        123786.3          282     -61.99004</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   moon_illuminance moon_fraction total_illuminance</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1     1.066142e-27      93.94848          123786.3</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># create data frame of input variables</span></span></span>
+<span class="r-in"><span> <span class="va">input</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>   longitude <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>   latitude <span class="op">=</span> <span class="fl">50</span>,</span></span>
+<span class="r-in"><span>   date <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="st">"2020-06-18 00:00:00"</span>, tz <span class="op">=</span> <span class="st">"GMT"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">*</span><span class="fl">24</span><span class="op">*</span><span class="fl">3600</span>, <span class="fl">1800</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>   sky_condition <span class="op">=</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># calculate on data frame</span></span></span>
+<span class="r-in"><span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">skylight</span><span class="op">(</span><span class="va">input</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    longitude latitude                date sky_condition sun_azimuth</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          0       50 2020-06-18 00:00:00             1         360</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          0       50 2020-06-18 00:30:00             1           7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          0       50 2020-06-18 01:00:00             1          14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4          0       50 2020-06-18 01:30:00             1          21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5          0       50 2020-06-18 02:00:00             1          28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6          0       50 2020-06-18 02:30:00             1          34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7          0       50 2020-06-18 03:00:00             1          41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8          0       50 2020-06-18 03:30:00             1          47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9          0       50 2020-06-18 04:00:00             1          52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10         0       50 2020-06-18 04:30:00             1          58</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11         0       50 2020-06-18 05:00:00             1          64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12         0       50 2020-06-18 05:30:00             1          69</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13         0       50 2020-06-18 06:00:00             1          74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14         0       50 2020-06-18 06:30:00             1          80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15         0       50 2020-06-18 07:00:00             1          85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16         0       50 2020-06-18 07:30:00             1          91</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17         0       50 2020-06-18 08:00:00             1          97</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18         0       50 2020-06-18 08:30:00             1         103</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19         0       50 2020-06-18 09:00:00             1         110</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20         0       50 2020-06-18 09:30:00             1         118</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21         0       50 2020-06-18 10:00:00             1         127</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22         0       50 2020-06-18 10:30:00             1         138</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23         0       50 2020-06-18 11:00:00             1         150</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24         0       50 2020-06-18 11:30:00             1         164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25         0       50 2020-06-18 12:00:00             1         179</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26         0       50 2020-06-18 12:30:00             1         195</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27         0       50 2020-06-18 13:00:00             1         209</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28         0       50 2020-06-18 13:30:00             1         221</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29         0       50 2020-06-18 14:00:00             1         232</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30         0       50 2020-06-18 14:30:00             1         241</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31         0       50 2020-06-18 15:00:00             1         249</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32         0       50 2020-06-18 15:30:00             1         256</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33         0       50 2020-06-18 16:00:00             1         263</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34         0       50 2020-06-18 16:30:00             1         269</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35         0       50 2020-06-18 17:00:00             1         274</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36         0       50 2020-06-18 17:30:00             1         280</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37         0       50 2020-06-18 18:00:00             1         285</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38         0       50 2020-06-18 18:30:00             1         291</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39         0       50 2020-06-18 19:00:00             1         296</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40         0       50 2020-06-18 19:30:00             1         301</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41         0       50 2020-06-18 20:00:00             1         307</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42         0       50 2020-06-18 20:30:00             1         313</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43         0       50 2020-06-18 21:00:00             1         319</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44         0       50 2020-06-18 21:30:00             1         325</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45         0       50 2020-06-18 22:00:00             1         332</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46         0       50 2020-06-18 22:30:00             1         338</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47         0       50 2020-06-18 23:00:00             1         345</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48         0       50 2020-06-18 23:30:00             1         352</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49         0       50 2020-06-19 00:00:00             1         360</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    sun_altitude sun_illuminance moon_azimuth moon_altitude moon_illuminance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   -16.6276922    2.872734e-05           40    -18.193474     7.503453e-14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   -16.3499406    3.874383e-05           46    -14.953394     2.407014e-12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   -15.4764151    9.949008e-05           52    -11.355126     1.189855e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   -14.0292824    4.779034e-04           58     -7.453916     8.248541e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   -12.0432004    4.163346e-03           64     -3.301080     6.409745e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    -9.5619226    6.272634e-02           69      1.419424     1.859100e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    -6.6346679    1.513215e+00           75      5.721701     6.080463e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    -3.3128799    4.883364e+01           80     10.298522     1.419753e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9     0.7953068    1.135681e+03           86     14.988517     2.442273e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10    4.4912107    3.588667e+03           91     19.729673     3.528487e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11    8.6210695    8.836026e+03           97     24.473187     4.600399e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12   12.9978263    1.647697e+04          103     29.169588     5.611704e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   17.5515623    2.546993e+04          109     33.763197     6.531394e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14   22.2338494    3.514985e+04          116     38.187614     7.337182e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15   27.0013999    4.508262e+04          123     42.360937     8.012695e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16   31.8108170    5.494771e+04          132     46.180854     8.546214e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17   36.6149501    6.448485e+04          141     49.521126     8.930063e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18   41.3587950    7.347061e+04          151     52.233116     9.160327e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19   45.9739704    8.170807e+04          163     54.158256     9.236741e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20   50.3709721    8.902247e+04          175     55.156230     9.162685e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21   54.4287710    9.525949e+04          187     55.143903     8.945187e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22   57.9831218    1.002850e+05          199     54.124953     8.594760e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23   60.8204418    1.039860e+05          211     52.188822     8.124957e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24   62.6945544    1.062732e+05          221     49.479767     7.551679e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25   63.3878939    1.070869e+05          230     46.158060     6.892447e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26   62.8054871    1.064046e+05          239     42.372696     6.165788e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27   61.0277194    1.042452e+05          246     38.249759     5.390784e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28   58.2652189    1.006656e+05          253     33.891392     4.586801e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29   54.7648487    9.575262e+04          259     29.379517     3.773418e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30   50.7442529    8.961748e+04          265     24.780795     2.970683e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31   46.3719517    8.239251e+04          271     20.151350     2.199999e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32   41.7723192    7.423023e+04          277     15.541076     1.486377e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33   37.0371816    6.530360e+04          282     10.998449     8.639239e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34   32.2364330    5.580745e+04          287      6.580348     3.877221e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35   27.4260094    4.596257e+04          293      2.399543     1.282259e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36   22.6535762    3.602524e+04          299     -2.023007     1.024176e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37   17.9627190    2.630907e+04          304     -5.941592     1.913078e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38   13.3965732    1.723440e+04          310     -9.586631     3.561675e-10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39    9.0027551    9.438297e+03          316    -12.908029     9.178562e-12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40    4.8476623    3.931513e+03          323    -15.853258     3.642676e-13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41    1.0980453    1.291022e+03          330    -18.368778     2.375493e-14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42   -2.9952932    6.670322e+01          337    -20.402471     2.668929e-15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43   -6.3482060    2.059679e+00          344    -21.907030     5.350966e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44   -9.3110728    8.250585e-02          351    -22.843968     1.962142e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45  -11.8324066    5.241369e-03          359    -23.187560     1.335644e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46  -13.8626994    5.728062e-04            6    -22.927820     1.697192e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47  -15.3576065    1.131358e-04           13    -22.071709     4.011410e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48  -16.2815607    4.170703e-05           21    -20.642229     1.741070e-15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49  -16.6112142    2.924137e-05           28    -18.675657     1.356837e-14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    moon_fraction total_illuminance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      10.648745      5.287273e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      10.522756      5.387438e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      10.397380      5.994902e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      10.272619      9.779116e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      10.148477      4.663987e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      10.024955      6.324493e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7       9.902057      1.513775e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8       9.779786      4.883428e+01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9       9.658143      1.135681e+03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10      9.537132      3.588667e+03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11      9.416756      8.836027e+03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12      9.297017      1.647697e+04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13      9.177918      2.546993e+04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14      9.059461      3.514985e+04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15      8.941649      4.508262e+04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16      8.824486      5.494771e+04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17      8.707973      6.448485e+04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18      8.592114      7.347061e+04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19      8.476911      8.170807e+04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20      8.362366      8.902247e+04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21      8.248484      9.525949e+04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22      8.135265      1.002850e+05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23      8.022713      1.039860e+05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24      7.910831      1.062732e+05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25      7.799621      1.070869e+05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26      7.689086      1.064046e+05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27      7.579229      1.042452e+05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28      7.470052      1.006656e+05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29      7.361558      9.575262e+04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30      7.253750      8.961749e+04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31      7.146630      8.239251e+04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32      7.040201      7.423023e+04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33      6.934466      6.530360e+04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34      6.829427      5.580745e+04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35      6.725088      4.596257e+04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36      6.621449      3.602525e+04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37      6.518516      2.630907e+04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38      6.416289      1.723440e+04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39      6.314772      9.438297e+03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40      6.213967      3.931513e+03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41      6.113877      1.291022e+03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42      6.014504      6.670372e+01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43      5.915852      2.060179e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44      5.817922      8.300585e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45      5.720718      5.741369e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46      5.624242      1.072806e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47      5.528496      6.131358e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48      5.433484      5.417070e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49      5.339207      5.292414e-04</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># the above statement can also be used</span></span></span>
+<span class="r-in"><span>  <span class="co"># in a piped fashion in R &gt;= 4.2</span></span></span>
+<span class="r-in"><span>  <span class="co"># input |&gt; skylight()</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -164,8 +338,8 @@ location, time and/or sky conditions can be provided.</p>
                           <div class="icon fab fa-github"></div></a>
                         <a href="https://bluegreenlabs.org/labs/" target="_blank" class="external-link">
                           <div class="icon fa fa-flask"></div></a>
-                        <a href="http://twitter.com/bluegreen_labs" target="_blank" class="external-link">
-                          <div class="icon fab fa-twitter"></div></a>
+                        <a href="https://www.linkedin.com/company/bluegreen-labs/" target="_blank" class="external-link">
+                          <div class="icon fa fa-linkedin"></div></a>
                     </div>
                 </div>
                 <div class="row top-4">
@@ -191,10 +365,10 @@ location, time and/or sky conditions can be provided.</p>
 
       </footer></div>
 
-  
 
 
-  
+
+
 
   </body></html>
 
