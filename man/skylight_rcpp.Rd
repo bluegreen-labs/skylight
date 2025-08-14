@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{skylight_rcpp}
 \alias{skylight_rcpp}
-\title{fast C++ implementation of skylight}
+\title{fast C++ implementation of the skylight model}
 \usage{
 skylight_rcpp(forcing)
 }

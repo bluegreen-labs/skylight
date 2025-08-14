@@ -32,21 +32,6 @@ test_that("check skylight function against known outputs", {
 
   expect_equal(vectorized_output, reference)
 
-  # check fast version
-  vectorized_output <- round(
-    skylight(
-      longitude = c(-135.8, 39.5),
-      latitude = c(-23.4, 21.3),
-      date = c(as.POSIXct("1986-12-18 21:00:00", tz = "GMT"),
-               d
-      ),
-      sky_condition = c(1,1),
-      fast = TRUE
-    )
-  )
-
-  expect_equal(vectorized_output, reference)
-
 })
 
 test_that("piped input tests", {

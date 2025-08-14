@@ -1,3 +1,7 @@
+# skylight 1.3
+
+* Including a fast Rcpp version for inverse modelling
+
 # skylight 1.2
 
 * updating reference (post manuscript publication)

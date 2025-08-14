@@ -1,6 +1,6 @@
 Dear CRAN team,
 
-This is a small correction of the citation file in the package, after the publication of the associated paper. No further changes were made, and package test statistics remain unchanged with respect to previous releases.
+This new version of {skylight} now includes uses C++ version of the previous R code base. This increases speed for small to medium data queries (~100s of values) which allows the code to be efficiently used in inverse modelling of locations based daily sky illuminance data, within the context of geolocation and biologging. All outputs were verified and remain on parity with published (and previous) values.
 
 Kind regards,
 Koen Hufkens
@@ -10,10 +10,9 @@ http://cran.r-project.org/web/packages/policies.html
 
 ## test environments, local, CI and r-hub
 
-- Ubuntu 22.04 install on R 4.3
-- Ubuntu 20.04 on github actions (devel / release)
-- Ubuntu 20.04 on github actions (R 3.6 - legacy)
-- rhub (check_for_cran()) one note wrt temp file 'lastMiKTeXException'?
+- Ubuntu 22.04 install on R 4.5
+- Ubuntu 22.04 on github actions (devel / release)
+- MacOS (release)
 - codecove.io code coverage at 100%
 
 ## local R CMD check results (as cran)

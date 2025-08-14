@@ -23,8 +23,6 @@ illuminance values (1 = cloud cover < 30%, 2 = thin veiled clouds
 can be considered a scaling factor, substituting it with the (inverse)
 slope parameter of an empirical fit should render more accurate results.
 (this can be a single value or vector of values)}
-
-\item{fast}{fast processing (TRUE or FALSE)}
 }
 \value{
 Sun and moon illuminance values (in lux), as well as their respective

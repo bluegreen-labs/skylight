@@ -136,6 +136,7 @@ arma::mat skylight_rcpp(arma::mat forcing) {
 
   // ------------- OUTPUT routines ------------------------
 
+  // assign results to output matrix
   output.col(0) = solar_azimuth;
   output.col(1) = solar_altitude;
   output.col(2) = solar_illuminance;
@@ -145,5 +146,6 @@ arma::mat skylight_rcpp(arma::mat forcing) {
   output.col(6) = lunar_fraction;
   output.col(7) = total_illuminance;
 
+  // return stuff
   return output;
 }
