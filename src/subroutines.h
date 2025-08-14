@@ -97,8 +97,8 @@ arma::mat moon(
    SD_W = sin(W);
    CD_W = cos(W);
 
-   V_new = (V + (6.29 - 1.27 * CD_W + 0.43 * CB_Y) % SB_Y + (0.66 + 1.27 * CB_Y) % SD_W -
-     0.19 * sin(G) - 0.23 * X % S) * DR;
+   V_new = (V + (6.29 - 1.27 * CD_W + 0.43 * CB_Y) % SB_Y +
+     (0.66 + 1.27 * CB_Y) % SD_W - 0.19 * sin(G) - 0.23 * X % S) * DR;
    Y_new = ((5.13 - 0.17 * CD_W) % X + (0.56 * SB_Y + 0.17 * SD_W) % S) * DR;
 
    SV = sin(V_new);
