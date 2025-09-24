@@ -2,7 +2,7 @@
 
 [![R-CMD-check](https://github.com/bluegreen-labs/skylight/actions/workflows/check-package.yaml/badge.svg)](https://github.com/bluegreen-labs/skylight/actions/workflows/check-package.yaml)
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/skylight)](https://cran.r-project.org/package=skylight)
-[![](https://cranlogs.r-pkg.org/badges/skylight)](https://cran.r-project.org/package=skylight)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/skylight)](https://cran.r-project.org/package=skylight)
 [![codecov](https://codecov.io/gh/bluegreen-labs/skylight/branch/main/graph/badge.svg?token=66IIX0HL7K)](https://app.codecov.io/gh/bluegreen-labs/skylight)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7222045.svg)](https://doi.org/10.5281/zenodo.7222045)
 
