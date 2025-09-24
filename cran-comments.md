@@ -1,6 +1,6 @@
 Dear CRAN team,
 
-This new version of {skylight} now includes uses C++ version of the previous R code base. This increases speed for small to medium data queries (~100s of values) which allows the code to be efficiently used in inverse modelling of locations based daily sky illuminance data, within the context of geolocation and biologging. All outputs were verified and remain on parity with published (and previous) values.
+This new version of {skylight} now uses a C++ version of the previous R code base. This increases speed for small to medium data queries (~100s of values) which allows the code to be efficiently used in inverse modelling of locations based daily sky illuminance data, within the context of geolocation and biologging. All outputs were verified and remain on parity with published (and previous) values.
 
 Kind regards,
 Koen Hufkens
