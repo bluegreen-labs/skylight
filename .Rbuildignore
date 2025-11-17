@@ -5,6 +5,7 @@
 ^docs$
 ^logo$
 ^data-raw$
+^analysis$
 ^manuscript$
 ^map.gif$
 
