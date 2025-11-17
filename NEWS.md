@@ -1,3 +1,7 @@
+# skylight 1.4
+
+* removing a parameter check which in some cases spams the command line with messages
+
 # skylight 1.3
 
 * Including a fast Rcpp version for inverse modelling
