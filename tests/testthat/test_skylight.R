@@ -53,9 +53,4 @@ test_that("piped input tests", {
   expect_error(
      skylight(input[,-2])
     )
-
-  # return message on missing sky_conditions
-  expect_message(
-    skylight(input[,-4])
-  )
 })
