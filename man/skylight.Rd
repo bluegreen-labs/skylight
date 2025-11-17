@@ -19,10 +19,9 @@ named columns: longitude, latitude, date and optionally sky_condition}
 
 \item{sky_condition}{a positive value (>=1) with which to scale
 illuminance values (1 = cloud cover < 30%, 2 = thin veiled clouds
-3 = average clouds, 10 = dark stratus clouds). By and large this
-can be considered a scaling factor, substituting it with the (inverse)
-slope parameter of an empirical fit should render more accurate results.
-(this can be a single value or vector of values)}
+3 = average clouds, 10 = dark stratus clouds). The value is set 1 (one) by
+default if missing (when all arguments are provided or should the column
+not be present in a data frame).}
 }
 \value{
 Sun and moon illuminance values (in lux), as well as their respective
