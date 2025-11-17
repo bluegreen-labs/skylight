@@ -105,10 +105,9 @@ named columns: longitude, latitude, date and optionally sky_condition</p></dd>
 <dt id="arg-sky-condition">sky_condition<a class="anchor" aria-label="anchor" href="#arg-sky-condition"></a></dt>
 <dd><p>a positive value (&gt;=1) with which to scale
 illuminance values (1 = cloud cover &lt; 30<!-- %, 2 = thin veiled clouds -->
-3 = average clouds, 10 = dark stratus clouds). By and large this
-can be considered a scaling factor, substituting it with the (inverse)
-slope parameter of an empirical fit should render more accurate results.
-(this can be a single value or vector of values)</p></dd>
+3 = average clouds, 10 = dark stratus clouds). The value is set 1 (one) by
+default if missing (when all arguments are provided or should the column
+not be present in a data frame).</p></dd>
 
 </dl></div>
     <div id="value">
